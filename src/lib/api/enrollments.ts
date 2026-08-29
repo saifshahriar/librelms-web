@@ -1,9 +1,5 @@
-import type { Course, CourseProgress, Post } from "@/lib/types";
+import type { Course, CourseProgress } from "@/lib/types";
 import { apiFetch } from "./client";
-
-interface ListResponse<T> {
-	data: T[];
-}
 
 export const enrollmentService = {
 	enroll(courseId: number) {

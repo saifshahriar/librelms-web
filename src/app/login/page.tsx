@@ -24,7 +24,7 @@ function LoginForm() {
 		try {
 			await login(identifier, password);
 			const next = searchParams.get("next");
-			router.replace(next && next.startsWith("/") ? next : "/");
+			router.replace(next?.startsWith("/") ? next : "/");
 		} catch (err) {
 			setError(
 				err instanceof Error ? err.message : "Login failed, try again",

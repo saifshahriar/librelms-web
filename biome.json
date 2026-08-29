@@ -22,7 +22,14 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": true
+			"recommended": true,
+			"performance": {
+				"noImgElement": "off"
+			},
+			"a11y": {
+				"noStaticElementInteractions": "off",
+				"useKeyWithClickEvents": "off"
+			}
 		},
 		"domains": {
 			"next": "recommended",

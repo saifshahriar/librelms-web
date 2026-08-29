@@ -2,7 +2,6 @@ import type {
 	AuthUser,
 	Course,
 	CourseProgress,
-	Enrollment,
 	Lesson,
 	Post,
 	Quiz,

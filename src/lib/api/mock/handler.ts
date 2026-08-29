@@ -1,16 +1,5 @@
 import { ApiError } from "@/lib/api/client";
-import type {
-	AuthUser,
-	Course,
-	CourseProgress,
-	Lesson,
-	Post,
-	Quiz,
-	QuizResult,
-	Role,
-	StudentProgress,
-	User,
-} from "@/lib/types";
+import type { Role } from "@/lib/types";
 import {
 	type DbUser,
 	fullQuiz,
@@ -20,7 +9,6 @@ import {
 	progressFor,
 	sanitizeQuiz,
 	studentProgressFor,
-	toAuthUser,
 	toCourse,
 	toLesson,
 	toPost,
@@ -61,8 +49,9 @@ const STAFF: Role[] = ["admin", "content_manager"];
 function isCourseOwner(user: DbUser, courseId: number): boolean {
 	if (user.role === "admin" || user.role === "content_manager") return true;
 	if (user.role !== "instructor") return false;
-	const course = getDb().courses.find((c) => c.id === courseId);
-	return course !== undefined && course.instructorIds.includes(user.id);
+	return getDb().courses.some(
+		(c) => c.id === courseId && c.instructorIds.includes(user.id),
+	);
 }
 
 function isEnrolled(userId: number, courseId: number): boolean {

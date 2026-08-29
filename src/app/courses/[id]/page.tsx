@@ -11,7 +11,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui";
-import { courseService, enrollmentService } from "@/lib/api";
+import { courseService, enrollmentService, lessonService } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 import type { Course, Lesson } from "@/lib/types";
 
@@ -35,7 +35,7 @@ export default function CourseDetailPage() {
 				setCourse(c.data);
 				if (user?.role === "student") {
 					try {
-						const l = await lessonServiceList(courseId);
+						const l = await lessonService.list(courseId);
 						setLessons(l.data);
 						setEnrolled(true);
 					} catch {
@@ -48,11 +48,6 @@ export default function CourseDetailPage() {
 		}
 		if (!Number.isNaN(courseId)) load();
 	}, [courseId, user?.role]);
-
-	async function lessonServiceList(id: number) {
-		const { lessonService } = await import("@/lib/api");
-		return lessonService.list(id);
-	}
 
 	async function onEnroll() {
 		setEnrolling(true);
