@@ -3,6 +3,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { excerpt } from "@/components/markdown";
 import { Badge, Card, CardBody } from "@/components/ui";
 import { courseService, postService } from "@/lib/api";
 import { faArrowRight } from "@/lib/icons";
@@ -133,7 +134,7 @@ export default function HomePage() {
 										{post.title}
 									</h3>
 									<p className="mt-1 line-clamp-3 text-sm text-muted-foreground">
-										{post.body}
+										{excerpt(post.body)}
 									</p>
 									<p className="mt-3 text-xs text-muted-foreground/70">
 										{post.authorName}{" "}

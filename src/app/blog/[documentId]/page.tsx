@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Markdown } from "@/components/markdown";
 import { Badge } from "@/components/ui";
 import { postService } from "@/lib/api";
 import { faArrowLeft } from "@/lib/icons";
@@ -78,8 +79,8 @@ export default function BlogPostPage() {
 					className="mt-6 w-full rounded-xl border border-border object-cover"
 				/>
 			)}
-			<div className="prose prose-slate mt-8 whitespace-pre-line text-foreground">
-				{post.body}
+			<div className="mt-8">
+				<Markdown text={post.body} />
 			</div>
 		</article>
 	);

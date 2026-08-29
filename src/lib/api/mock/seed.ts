@@ -97,7 +97,7 @@ export function seedDb(): MockDb {
 				title: "JSX and Components",
 				order: 1,
 				kind: "text",
-				body: "JSX is a syntax extension for JavaScript that lets you write UI as functions of data.\n\nEvery React interface is a tree of components. A component is just a function that receives props and returns markup:\n\nfunction Greeting({ name }) {\n  return <h1>Hello, {name}!</h1>;\n}\n\nIn this lesson we cover:\n- What JSX compiles down to (React.createElement / jsx runtime calls)\n- Rendering custom components vs host elements\n- Why keys matter when rendering lists\n\nTry it: build a small <Card> component that renders a title and children.",
+				body: "JSX is a syntax extension for JavaScript that lets you write UI as functions of data.\n\nEvery React interface is a tree of **components**. A component is just a function that receives props and returns markup:\n\n```tsx\nfunction Greeting({ name }: { name: string }) {\n  return <h1>Hello, {name}!</h1>;\n}\n```\n\nIn this lesson we cover:\n\n- What JSX compiles down to (the `jsx` runtime calls)\n- Rendering custom components vs host elements\n- Why **keys** matter when rendering lists\n\n> Try it: build a small `Card` component that renders a title and children.",
 			},
 			{
 				id: 2,
@@ -106,7 +106,7 @@ export function seedDb(): MockDb {
 				title: "Props and State",
 				order: 2,
 				kind: "text",
-				body: "Props flow down; state is local to a component.\n\nKey ideas:\n- Props are read-only inputs\n- useState gives a component its own memory\n- Never mutate state directly; always call the setter\n- When several components need the same state, lift it up\n\nWorked example: a counter that can be reset by its parent via a prop-driven effect.",
+				body: "Props flow down; state is local to a component.\n\nKey ideas:\n\n- Props are *read-only* inputs\n- `useState` gives a component its own memory\n- Never mutate state directly; always call the setter\n- When several components need the same state, *lift it up*\n\nWorked example: a counter reset by its parent via a prop-driven effect.\n\n```tsx\nfunction Counter() {\n  const [n, setN] = useState(0);\n  return <button onClick={() => setN(n + 1)}>{n}</button>;\n}\n```",
 			},
 			{
 				id: 3,

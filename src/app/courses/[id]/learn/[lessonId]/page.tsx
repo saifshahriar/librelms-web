@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { RequireRole } from "@/components/auth/require-role";
+import { Markdown } from "@/components/markdown";
 import { Badge, Button, Card, CardBody, ProgressBar } from "@/components/ui";
 import {
 	completionService,
@@ -139,9 +140,7 @@ function LessonViewer() {
 								/>
 							</div>
 						) : (
-							<div className="whitespace-pre-line leading-relaxed text-foreground">
-								{lesson.content.body}
-							</div>
+							<Markdown text={lesson.content.body} />
 						)}
 					</CardBody>
 				</Card>
