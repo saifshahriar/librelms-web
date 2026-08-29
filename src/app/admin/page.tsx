@@ -45,20 +45,20 @@ function AdminDashboard() {
 			<h1 className="text-page-title mb-2">Admin dashboard</h1>
 			<p className="mb-8 text-muted-foreground">Platform overview.</p>
 
-			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+			<div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
 				<StatCard label="Total users" value={stats.totalUsers} />
 				<StatCard label="Courses" value={stats.totalCourses} />
 				<StatCard label="Enrollments" value={stats.totalEnrollments} />
 				<StatCard label="Lessons" value={stats.totalLessons} />
 			</div>
 
-			<div className="mt-6 grid gap-4 lg:grid-cols-2">
+			<div className="mt-6 grid gap-5 lg:grid-cols-2">
 				<Card>
 					<CardHeader>
 						<CardTitle>Users per role</CardTitle>
 					</CardHeader>
 					<CardBody>
-						<ul className="space-y-2">
+						<ul className="space-y-3">
 							{Object.entries(stats.usersByRole).map(
 								([role, count]) => (
 									<li
@@ -86,7 +86,7 @@ function AdminDashboard() {
 						<CardTitle>Content</CardTitle>
 					</CardHeader>
 					<CardBody>
-						<ul className="space-y-2 text-sm">
+						<ul className="space-y-3 text-sm">
 							<li className="flex justify-between">
 								<span className="text-muted-foreground">
 									Quizzes
@@ -116,7 +116,7 @@ function AdminDashboard() {
 				</Card>
 			</div>
 
-			<div className="mt-6 flex gap-3">
+			<div className="mt-8 flex gap-3">
 				<Link
 					href="/admin/users"
 					className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
