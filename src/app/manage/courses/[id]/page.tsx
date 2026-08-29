@@ -341,8 +341,8 @@ function QuizModal({
 						placeholder="e.g. Module 1 check"
 					/>
 				</div>
-				{/* biome-ignore lint/suspicious/noArrayIndexKey: draft rows are addressed by index in state */}
 				{questions.map((q, qi) => (
+					// biome-ignore lint/suspicious/noArrayIndexKey: draft rows are addressed by index in state
 					<div key={qi} className="rounded-lg border border-edge p-3">
 						<div className="flex items-center gap-2">
 							<span className="text-xs font-semibold text-ink-muted">
@@ -365,9 +365,9 @@ function QuizModal({
 							</button>
 						</div>
 						<div className="mt-2 space-y-2">
-							{/* biome-ignore lint/suspicious/noArrayIndexKey: draft rows are addressed by index in state */}
 							{q.options.map((o, oi) => (
 								<div
+									// biome-ignore lint/suspicious/noArrayIndexKey: draft rows are addressed by index in state
 									key={oi}
 									className="flex items-center gap-2"
 								>
