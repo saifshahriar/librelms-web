@@ -1,0 +1,245 @@
+"use client";
+
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { RequireRole } from "@/components/auth/require-role";
+import { Badge, Button, Card, CardBody, ProgressBar } from "@/components/ui";
+import { completionService, courseService, lessonService } from "@/lib/api";
+import type { Course, CourseProgress, Lesson } from "@/lib/types";
+
+function LessonViewer() {
+	const params = useParams<{ id: string; lessonId: string }>();
+	const courseId = Number.parseInt(params.id, 10);
+	const lessonId = Number.parseInt(params.lessonId, 10);
+	const router = useRouter();
+
+	const [course, setCourse] = useState<Course | null>(null);
+	const [lessons, setLessons] = useState<Lesson[]>([]);
+	const [progress, setProgress] = useState<CourseProgress | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [marking, setMarking] = useState(false);
+	const [error, setError] = useState<string | null>(null);
+
+	useEffect(() => {
+		async function load() {
+			try {
+				const [c, l, p] = await Promise.all([
+					courseService.get(courseId),
+					lessonService.list(courseId),
+					courseService.myProgress(courseId),
+				]);
+				setCourse(c.data);
+				setLessons(l.data);
+				setProgress(p.data);
+			} catch {
+				setError("Could not load this lesson. Are you enrolled?");
+			} finally {
+				setLoading(false);
+			}
+		}
+		if (!Number.isNaN(courseId) && !Number.isNaN(lessonId)) load();
+	}, [courseId, lessonId]);
+
+	const ordered = [...lessons].sort((a, b) => a.order - b.order);
+	const currentIndex = ordered.findIndex((l) => l.id === lessonId);
+	const lesson = ordered[currentIndex];
+	const prev = ordered[currentIndex - 1];
+	const next = ordered[currentIndex + 1];
+
+	const completedThis =
+		progress !== null &&
+		lessons.length > 0 &&
+		currentIndex >= 0 &&
+		((progress.completedLessons > 0 &&
+			ordered
+				.slice(0, progress.completedLessons)
+				.some((l) => l.id === lessonId)) ||
+			false);
+
+	async function markComplete() {
+		setMarking(true);
+		setError(null);
+		try {
+			await completionService.complete(lessonId);
+			const p = await courseService.myProgress(courseId);
+			setProgress(p.data);
+			if (next) router.push(`/courses/${courseId}/learn/${next.id}`);
+		} catch (err) {
+			setError(
+				err instanceof Error ? err.message : "Failed to mark complete",
+			);
+		} finally {
+			setMarking(false);
+		}
+	}
+
+	if (loading) {
+		return (
+			<div className="container-page py-10">
+				<div className="card-surface h-96 animate-pulse" />
+			</div>
+		);
+	}
+
+	if (error || !course || !lesson) {
+		return (
+			<div className="container-page py-20 text-center">
+				<h1 className="text-page-title">
+					{error ?? "Lesson not found"}
+				</h1>
+				<Link
+					href="/my/courses"
+					className="mt-4 inline-block text-brand-600 hover:underline"
+				>
+					← Back to My Courses
+				</Link>
+			</div>
+		);
+	}
+
+	return (
+		<div className="container-page grid max-w-6xl gap-8 py-10 lg:grid-cols-[1fr_300px]">
+			<div>
+				<Link
+					href={`/courses/${courseId}`}
+					className="text-sm text-brand-600 hover:underline"
+				>
+					← {course.title}
+				</Link>
+				<div className="mt-3 flex items-center gap-3">
+					<Badge tone="brand">Lesson {lesson.order}</Badge>
+					<Badge
+						tone={
+							lesson.content.kind === "video"
+								? "purple"
+								: "neutral"
+						}
+					>
+						{lesson.content.kind === "video" ? "Video" : "Reading"}
+					</Badge>
+				</div>
+				<h1 className="mt-2 text-page-title">{lesson.title}</h1>
+
+				<Card className="mt-6">
+					<CardBody>
+						{lesson.content.kind === "video" ? (
+							<div className="aspect-video overflow-hidden rounded-lg bg-slate-900">
+								<iframe
+									src={embedUrl(lesson.content.videoUrl)}
+									title={lesson.title}
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+									allowFullScreen
+									className="h-full w-full"
+								/>
+							</div>
+						) : (
+							<div className="whitespace-pre-line leading-relaxed text-ink">
+								{lesson.content.body}
+							</div>
+						)}
+					</CardBody>
+				</Card>
+
+				<div className="mt-6 flex items-center justify-between">
+					{prev ? (
+						<Link
+							href={`/courses/${courseId}/learn/${prev.id}`}
+							className="rounded-lg border border-edge px-4 py-2 text-sm font-medium hover:bg-canvas"
+						>
+							← Previous
+						</Link>
+					) : (
+						<span />
+					)}
+					<Button onClick={markComplete} loading={marking}>
+						{completedThis ? "Completed ✓" : "Mark as complete"}
+					</Button>
+					{next ? (
+						<Link
+							href={`/courses/${courseId}/learn/${next.id}`}
+							className="rounded-lg border border-edge px-4 py-2 text-sm font-medium hover:bg-canvas"
+						>
+							Next →
+						</Link>
+					) : (
+						<span />
+					)}
+				</div>
+			</div>
+
+			<aside>
+				<Card>
+					<CardBody>
+						<h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">
+							Course progress
+						</h3>
+						{progress && (
+							<>
+								<div className="mb-1.5 flex items-center justify-between text-sm">
+									<span className="text-ink-muted">
+										{progress.completedLessons}/
+										{progress.totalLessons} lessons
+									</span>
+									<span className="font-semibold text-brand-700">
+										{progress.percent}%
+									</span>
+								</div>
+								<ProgressBar value={progress.percent} />
+							</>
+						)}
+						<ol className="mt-4 space-y-1">
+							{ordered.map((l, i) => {
+								const done =
+									progress !== null &&
+									i < progress.completedLessons;
+								const current = l.id === lessonId;
+								return (
+									<li key={l.id}>
+										<Link
+											href={`/courses/${courseId}/learn/${l.id}`}
+											className={`flex items-center gap-2 rounded-md px-2 py-1.5 text-sm ${
+												current
+													? "bg-brand-50 font-medium text-brand-700"
+													: "text-ink-muted hover:bg-canvas"
+											}`}
+										>
+											<span
+												className={`flex h-5 w-5 items-center justify-center rounded-full text-xs ${
+													done
+														? "bg-emerald-100 text-emerald-700"
+														: "bg-slate-100 text-ink-faint"
+												}`}
+											>
+												{done ? "✓" : l.order}
+											</span>
+											<span className="truncate">
+												{l.title}
+											</span>
+										</Link>
+									</li>
+								);
+							})}
+						</ol>
+					</CardBody>
+				</Card>
+			</aside>
+		</div>
+	);
+}
+
+function embedUrl(videoUrl: string): string {
+	const youtube = videoUrl.match(
+		/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/,
+	);
+	if (youtube) return `https://www.youtube.com/embed/${youtube[1]}`;
+	return videoUrl;
+}
+
+export default function LearnPage() {
+	return (
+		<RequireRole roles={["student"]}>
+			<LessonViewer />
+		</RequireRole>
+	);
+}

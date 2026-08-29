@@ -1,5 +1,6 @@
 export { adminService } from "./admin";
 export { authService } from "./auth";
+export { completionService } from "./completions";
 export { courseService } from "./courses";
 export { enrollmentService } from "./enrollments";
 export { lessonService } from "./lessons";
