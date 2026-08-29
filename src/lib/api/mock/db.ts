@@ -150,7 +150,7 @@ const SEQ = [
 	"posts",
 ] as const;
 
-/* ---- row → API shape mappers ---- */
+/* row to API shape mappers */
 
 export function toUser(u: DbUser): User {
 	const { password: _pw, ...rest } = u;
