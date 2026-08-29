@@ -189,7 +189,7 @@ export function SiteFooter() {
 	return (
 		<footer className="border-t border-border bg-background">
 			<div className="container-page flex flex-col items-center justify-between gap-2 py-6 text-sm text-muted-foreground sm:flex-row">
-				<div>LibreLMS — open learning platform</div>
+				<div>LibreLMS, open learning platform</div>
 				<div>Built with Next.js</div>
 			</div>
 		</footer>
