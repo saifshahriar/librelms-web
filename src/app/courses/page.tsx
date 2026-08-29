@@ -1,0 +1,95 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import { Badge, Card, CardBody } from "@/components/ui";
+import { courseService } from "@/lib/api";
+import type { Course } from "@/lib/types";
+
+export default function CoursesPage() {
+	const [courses, setCourses] = useState<Course[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [query, setQuery] = useState("");
+
+	useEffect(() => {
+		courseService
+			.list()
+			.then((res) => setCourses(res.data))
+			.finally(() => setLoading(false));
+	}, []);
+
+	const filtered = useMemo(() => {
+		const q = query.trim().toLowerCase();
+		if (!q) return courses;
+		return courses.filter(
+			(c) =>
+				c.title.toLowerCase().includes(q) ||
+				c.description.toLowerCase().includes(q),
+		);
+	}, [courses, query]);
+
+	return (
+		<div className="container-page py-10">
+			<div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+				<div>
+					<h1 className="text-page-title">Courses</h1>
+					<p className="mt-1 text-ink-muted">
+						Browse the library and enroll to start learning.
+					</p>
+				</div>
+				<input
+					type="search"
+					placeholder="Search courses…"
+					value={query}
+					onChange={(e) => setQuery(e.target.value)}
+					className="input-base sm:max-w-xs"
+				/>
+			</div>
+
+			{loading ? (
+				<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					{[0, 1, 2, 3, 4, 5].map((i) => (
+						<div
+							key={i}
+							className="card-surface h-44 animate-pulse"
+						/>
+					))}
+				</div>
+			) : filtered.length === 0 ? (
+				<div className="card-surface px-6 py-16 text-center text-ink-muted">
+					No courses match your search.
+				</div>
+			) : (
+				<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					{filtered.map((course) => (
+						<Link key={course.id} href={`/courses/${course.id}`}>
+							<Card className="h-full transition-shadow hover:shadow-md">
+								<CardBody>
+									<div className="mb-3 flex items-center gap-2">
+										<Badge tone="brand">
+											{course.lessonIds.length} lessons
+										</Badge>
+										{course.quizIds.length > 0 && (
+											<Badge tone="purple">
+												{course.quizIds.length} quiz
+											</Badge>
+										)}
+									</div>
+									<h3 className="text-lg font-semibold">
+										{course.title}
+									</h3>
+									<p className="mt-1 line-clamp-3 text-sm text-ink-muted">
+										{course.description}
+									</p>
+									<p className="mt-4 text-sm font-medium text-brand-600">
+										View course →
+									</p>
+								</CardBody>
+							</Card>
+						</Link>
+					))}
+				</div>
+			)}
+		</div>
+	);
+}
