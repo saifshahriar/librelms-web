@@ -76,16 +76,6 @@ function body<T>(init?: RequestInit): T {
 	return JSON.parse(init.body as string) as T;
 }
 
-function docId(prefix: string): string {
-	return `${prefix}-${crypto.randomUUID().slice(0, 8)}`;
-}
-
-const UUID_RE =
-	/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-function docIdValid(id: string): boolean {
-	return UUID_RE.test(id);
-}
-
 function mkDocId(prefix: string): string {
 	return `${prefix}-${crypto.randomUUID().replace(/-/g, "").slice(0, 12)}`;
 }
@@ -765,15 +755,3 @@ export async function mockRequest<T>(
 
 	throw new ApiError(404, `No mock handler for ${method} ${p}`);
 }
-
-export type {
-	AuthUser as _AuthUser,
-	Course as _Course,
-	CourseProgress as _CourseProgress,
-	Lesson as _Lesson,
-	Post as _Post,
-	Quiz as _Quiz,
-	QuizResult as _QuizResult,
-	StudentProgress as _StudentProgress,
-	User as _User,
-};
