@@ -75,7 +75,10 @@ export default function BlogListPage() {
 												{post.body}
 											</p>
 											<p className="mt-2 text-xs text-muted-foreground/70">
-												{post.authorName} ·{" "}
+												{post.authorName}{" "}
+												<span className="text-muted-foreground/40">
+													|
+												</span>{" "}
 												{new Date(
 													post.publishedAt ??
 														post.createdAt,

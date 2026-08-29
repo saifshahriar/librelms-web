@@ -1,5 +1,6 @@
 "use client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -22,6 +23,7 @@ import {
 } from "@/components/ui";
 import { courseService, lessonService, quizService } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
+import { faArrowLeft, faXmark } from "@/lib/icons";
 import { ownsCourse } from "@/lib/permissions";
 import type { Course, Lesson, Quiz, StudentProgress } from "@/lib/types";
 
@@ -143,7 +145,7 @@ function LessonModal({
 							rows={8}
 							value={body}
 							onChange={(e) => setBody(e.target.value)}
-							placeholder="Lesson content in plain text…"
+							placeholder="Lesson content in plain text"
 						/>
 					</div>
 				) : (
@@ -153,7 +155,7 @@ function LessonModal({
 							id="lesson-video"
 							value={videoUrl}
 							onChange={(e) => setVideoUrl(e.target.value)}
-							placeholder="https://www.youtube.com/watch?v=…"
+							placeholder="https://www.youtube.com/watch?v="
 						/>
 					</div>
 				)}
@@ -370,10 +372,13 @@ function QuizModal({
 								className="rounded p-1 text-sm text-red-500 hover:bg-red-50"
 								aria-label={`Remove question ${qi + 1}`}
 							>
-								✕
+								<FontAwesomeIcon
+									icon={faXmark}
+									className="size-3.5"
+								/>
 							</button>
 						</div>
-						<div className="mt-2 space-y-2">
+						<div className="mt-3 space-y-2">
 							{q.options.map((o, oi) => (
 								<div
 									// biome-ignore lint/suspicious/noArrayIndexKey: draft rows are addressed by index in state
@@ -401,7 +406,10 @@ function QuizModal({
 										className="rounded p-1 text-xs text-muted-foreground/70 hover:bg-muted/50 hover:text-red-500"
 										aria-label={`Remove option ${oi + 1}`}
 									>
-										✕
+										<FontAwesomeIcon
+											icon={faXmark}
+											className="size-3"
+										/>
 									</button>
 								</div>
 							))}
@@ -503,7 +511,7 @@ function CourseManagePageInner() {
 					href="/manage/courses"
 					className="mt-4 inline-block text-brand-600 hover:underline"
 				>
-					← Back to courses
+					Back to courses
 				</Link>
 			</div>
 		);
@@ -533,7 +541,8 @@ function CourseManagePageInner() {
 				href="/manage/courses"
 				className="text-sm text-brand-600 hover:underline"
 			>
-				← Manage courses
+				<FontAwesomeIcon icon={faArrowLeft} className="size-3.5" />
+				Manage courses
 			</Link>
 			<div className="mt-3 flex flex-wrap items-start justify-between gap-4">
 				<div>
@@ -570,16 +579,16 @@ function CourseManagePageInner() {
 					</div>
 					{lessons.length === 0 ? (
 						<p className="py-6 text-center text-sm text-muted-foreground">
-							No lessons yet — add the first one.
+							No lessons yet, add the first one.
 						</p>
 					) : (
-						<ol className="divide-y divide-edge rounded-lg border border-border">
+						<ol className="divide-y divide-border rounded-lg border border-border">
 							{[...lessons]
 								.sort((a, b) => a.order - b.order)
 								.map((lesson) => (
 									<li
 										key={lesson.id}
-										className="flex items-center gap-3 px-4 py-3"
+										className="flex items-center gap-3 px-4 py-3.5"
 									>
 										<span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-semibold text-brand-700">
 											{lesson.order}
@@ -639,14 +648,14 @@ function CourseManagePageInner() {
 					</div>
 					{quizzes.length === 0 ? (
 						<p className="py-6 text-center text-sm text-muted-foreground">
-							No quizzes yet — create an MCQ quiz for this course.
+							No quizzes yet, create an MCQ quiz for this course.
 						</p>
 					) : (
-						<ul className="divide-y divide-edge rounded-lg border border-border">
+						<ul className="divide-y divide-border rounded-lg border border-border">
 							{quizzes.map((quiz) => (
 								<li
 									key={quiz.id}
-									className="flex items-center gap-3 px-4 py-3"
+									className="flex items-center gap-3 px-4 py-3.5"
 								>
 									<div className="min-w-0 flex-1">
 										<div className="truncate font-medium">

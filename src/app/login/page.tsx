@@ -59,7 +59,7 @@ function LoginForm() {
 							type="password"
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
-							placeholder="••••••••"
+							placeholder="Enter password"
 							required
 						/>
 					</div>

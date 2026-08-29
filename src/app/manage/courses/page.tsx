@@ -1,5 +1,6 @@
 "use client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { RequireRole } from "@/components/auth/require-role";
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui";
 import { courseService } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
+import { faArrowRight } from "@/lib/icons";
 import { ownsCourse } from "@/lib/permissions";
 import type { Course } from "@/lib/types";
 
@@ -149,7 +151,7 @@ function ManageCourses() {
 									<th className="px-4 py-3" />
 								</tr>
 							</thead>
-							<tbody className="divide-y divide-edge">
+							<tbody className="divide-y divide-border">
 								{visible.map((course) => (
 									<tr
 										key={course.id}
@@ -176,9 +178,13 @@ function ManageCourses() {
 										<td className="px-4 py-3 text-right">
 											<Link
 												href={`/manage/courses/${course.id}`}
-												className="font-medium text-brand-600 hover:underline"
+												className="inline-flex items-center gap-1 font-medium text-brand-600 hover:underline"
 											>
-												Manage →
+												Manage
+												<FontAwesomeIcon
+													icon={faArrowRight}
+													className="size-3"
+												/>
 											</Link>
 										</td>
 									</tr>

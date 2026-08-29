@@ -47,7 +47,7 @@ export default function RegisterPage() {
 			<div className="border border-border rounded-xl bg-card w-full max-w-md p-6">
 				<h1 className="text-page-title mb-1">Create account</h1>
 				<p className="mb-6 text-sm text-muted-foreground">
-					New accounts start as Student — enroll in courses, learn and
+					New accounts start as Student: enroll in courses, learn and
 					take quizzes.
 				</p>
 				<form onSubmit={onSubmit} className="space-y-4">

@@ -1,10 +1,12 @@
 "use client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui";
 import { postService } from "@/lib/api";
+import { faArrowLeft } from "@/lib/icons";
 import type { Post } from "@/lib/types";
 
 export default function BlogPostPage() {
@@ -50,13 +52,14 @@ export default function BlogPostPage() {
 		<article className="container-page max-w-3xl py-10">
 			<Link
 				href="/blog"
-				className="text-sm text-brand-600 hover:underline"
+				className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:underline"
 			>
-				← Back to blog
+				<FontAwesomeIcon icon={faArrowLeft} className="size-3.5" />
+				Back to blog
 			</Link>
 			<div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground/70">
 				<span>{post.authorName}</span>
-				<span>·</span>
+				<span className="text-muted-foreground/40">|</span>
 				<span>
 					{new Date(
 						post.publishedAt ?? post.createdAt,

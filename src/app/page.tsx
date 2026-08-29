@@ -1,9 +1,11 @@
 "use client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Badge, Card, CardBody } from "@/components/ui";
 import { courseService, postService } from "@/lib/api";
+import { faArrowRight } from "@/lib/icons";
 import type { Course, Post } from "@/lib/types";
 
 export default function HomePage() {
@@ -37,7 +39,7 @@ export default function HomePage() {
 					<p className="mx-auto mt-4 max-w-xl text-muted-foreground">
 						LibreLMS is an open learning platform: enroll in
 						courses, watch lessons, take quizzes and track your
-						progress — or create courses as an instructor.
+						progress, or create courses as an instructor.
 					</p>
 					<div className="mt-8 flex justify-center gap-3">
 						<Link
@@ -61,9 +63,13 @@ export default function HomePage() {
 					<h2 className="text-section-title">Popular courses</h2>
 					<Link
 						href="/courses"
-						className="text-sm font-medium text-brand-600 hover:underline"
+						className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:underline"
 					>
-						View all →
+						View all
+						<FontAwesomeIcon
+							icon={faArrowRight}
+							className="size-3"
+						/>
 					</Link>
 				</div>
 				{loading ? (
@@ -109,9 +115,13 @@ export default function HomePage() {
 					<h2 className="text-section-title">From the blog</h2>
 					<Link
 						href="/blog"
-						className="text-sm font-medium text-brand-600 hover:underline"
+						className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:underline"
 					>
-						View all →
+						View all
+						<FontAwesomeIcon
+							icon={faArrowRight}
+							className="size-3"
+						/>
 					</Link>
 				</div>
 				<div className="grid gap-4 sm:grid-cols-3">
@@ -126,7 +136,10 @@ export default function HomePage() {
 										{post.body}
 									</p>
 									<p className="mt-3 text-xs text-muted-foreground/70">
-										{post.authorName} ·{" "}
+										{post.authorName}{" "}
+										<span className="text-muted-foreground/40">
+											|
+										</span>{" "}
 										{new Date(
 											post.publishedAt ?? post.createdAt,
 										).toLocaleDateString()}

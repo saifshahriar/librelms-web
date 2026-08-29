@@ -119,7 +119,7 @@ function PostEditor({
 						rows={10}
 						value={body}
 						onChange={(e) => setBody(e.target.value)}
-						placeholder="Write your post…"
+						placeholder="Write your post"
 					/>
 				</div>
 				<div>
@@ -130,7 +130,7 @@ function PostEditor({
 						id="post-cover"
 						value={coverImageUrl}
 						onChange={(e) => setCoverImageUrl(e.target.value)}
-						placeholder="https://…"
+						placeholder="https://"
 					/>
 				</div>
 				{error && <p className="text-sm text-red-600">{error}</p>}
@@ -211,7 +211,7 @@ function BlogManage() {
 									<th className="px-4 py-3" />
 								</tr>
 							</thead>
-							<tbody className="divide-y divide-edge">
+							<tbody className="divide-y divide-border">
 								{posts.map((post) => (
 									<tr
 										key={post.id}

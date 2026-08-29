@@ -58,7 +58,10 @@ function ResultsHistory() {
 											{r.quizTitle}
 										</div>
 										<div className="mt-0.5 text-sm text-muted-foreground">
-											{r.courseTitle} ·{" "}
+											{r.courseTitle}{" "}
+											<span className="text-muted-foreground/40">
+												|
+											</span>{" "}
 											{new Date(
 												r.submittedAt,
 											).toLocaleString()}
