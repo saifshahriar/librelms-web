@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { LockedOverlay } from "@/components/locked-overlay";
 import {
 	Badge,
 	Button,
@@ -114,9 +115,24 @@ export default function CourseDetailPage() {
 						</CardHeader>
 						<CardBody className="p-0">
 							{permissionMessage ? (
-								<p className="px-6 py-10 text-center text-sm text-muted-foreground">
-									{permissionMessage}
-								</p>
+								<LockedOverlay message={permissionMessage}>
+									<ol className="divide-y divide-border">
+										{[1, 2, 3].map((i) => (
+											<li
+												key={i}
+												className="flex items-center gap-3 px-5 py-3.5"
+											>
+												<span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">
+													{i}
+												</span>
+												<div className="min-w-0 flex-1 space-y-1.5">
+													<div className="h-3 w-1/3 rounded bg-muted" />
+													<div className="h-2 w-1/5 rounded bg-muted/70" />
+												</div>
+											</li>
+										))}
+									</ol>
+								</LockedOverlay>
 							) : user?.role === "student" && !enrolled ? (
 								<p className="px-6 py-10 text-center text-sm text-muted-foreground">
 									Enroll to access the lessons of this course.
