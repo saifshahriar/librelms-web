@@ -111,7 +111,7 @@ export function getDb(): MockDb {
 			db = JSON.parse(
 				window.localStorage.getItem(STORAGE_KEY) as string,
 			) as MockDb;
-			return db;
+			return db as MockDb;
 		} catch {
 			// corrupted storage falls through to reseed
 		}
