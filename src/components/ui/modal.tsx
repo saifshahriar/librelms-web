@@ -26,11 +26,13 @@ export function Modal({
 }) {
 	return (
 		<Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-			<DialogContent className="sm:max-w-lg">
+			<DialogContent className="sm:max-w-xl">
 				<DialogHeader>
 					<DialogTitle>{title}</DialogTitle>
 				</DialogHeader>
-				<div className="max-h-[65vh] overflow-y-auto">{children}</div>
+				<div className="max-h-[65vh] space-y-1 overflow-y-auto">
+					{children}
+				</div>
 				{footer && <DialogFooter>{footer}</DialogFooter>}
 				<DialogDescription className="sr-only">
 					{title}
