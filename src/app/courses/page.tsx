@@ -66,11 +66,11 @@ export default function CoursesPage() {
 							<Card className="h-full transition-shadow hover:shadow-md">
 								<CardBody>
 									<div className="mb-3 flex items-center gap-2">
-										<Badge tone="brand">
+										<Badge variant="brand">
 											{course.lessonIds.length} lessons
 										</Badge>
 										{course.quizIds.length > 0 && (
-											<Badge tone="purple">
+											<Badge variant="purple">
 												{course.quizIds.length} quiz
 											</Badge>
 										)}

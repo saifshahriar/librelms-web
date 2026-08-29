@@ -110,12 +110,12 @@ function LessonViewer() {
 					← {course.title}
 				</Link>
 				<div className="mt-3 flex items-center gap-3">
-					<Badge tone="brand">Lesson {lesson.order}</Badge>
+					<Badge variant="brand">Lesson {lesson.order}</Badge>
 					<Badge
-						tone={
+						variant={
 							lesson.content.kind === "video"
 								? "purple"
-								: "neutral"
+								: "secondary"
 						}
 					>
 						{lesson.content.kind === "video" ? "Video" : "Reading"}

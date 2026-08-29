@@ -85,7 +85,7 @@ export default function HomePage() {
 								<Card className="h-full transition-shadow hover:shadow-md">
 									<CardBody>
 										<div className="mb-2 flex items-center justify-between">
-											<Badge tone="brand">
+											<Badge variant="brand">
 												{course.lessonIds.length}{" "}
 												lessons
 											</Badge>

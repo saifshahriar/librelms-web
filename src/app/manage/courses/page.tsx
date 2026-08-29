@@ -164,12 +164,12 @@ function ManageCourses() {
 											</div>
 										</td>
 										<td className="px-4 py-3">
-											<Badge tone="brand">
+											<Badge variant="brand">
 												{course.lessonIds.length}
 											</Badge>
 										</td>
 										<td className="px-4 py-3">
-											<Badge tone="purple">
+											<Badge variant="purple">
 												{course.quizIds.length}
 											</Badge>
 										</td>

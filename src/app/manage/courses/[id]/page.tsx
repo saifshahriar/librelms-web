@@ -14,6 +14,10 @@ import {
 	Modal,
 	ProgressBar,
 	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
 	Textarea,
 } from "@/components/ui";
 import { courseService, lessonService, quizService } from "@/lib/api";
@@ -119,14 +123,16 @@ function LessonModal({
 				<div>
 					<Label htmlFor="lesson-kind">Content type</Label>
 					<Select
-						id="lesson-kind"
 						value={kind}
-						onChange={(e) =>
-							setKind(e.target.value as "text" | "video")
-						}
+						onValueChange={(v) => setKind(v as "text" | "video")}
 					>
-						<option value="text">Text</option>
-						<option value="video">Video URL</option>
+						<SelectTrigger id="lesson-kind" className="w-full">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectItem value="text">Text</SelectItem>
+							<SelectItem value="video">Video URL</SelectItem>
+						</SelectContent>
 					</Select>
 				</div>
 				{kind === "text" ? (
@@ -534,7 +540,7 @@ function CourseManagePageInner() {
 					</p>
 				</div>
 				<Button
-					variant="danger"
+					variant="destructive"
 					size="sm"
 					onClick={() => setDeleteCourseOpen(true)}
 				>
@@ -596,7 +602,7 @@ function CourseManagePageInner() {
 											Edit
 										</Button>
 										<Button
-											variant="danger"
+											variant="destructive"
 											size="sm"
 											onClick={() =>
 												setDeleteTarget(lesson)
@@ -658,7 +664,7 @@ function CourseManagePageInner() {
 										Edit
 									</Button>
 									<Button
-										variant="danger"
+										variant="destructive"
 										size="sm"
 										onClick={() => setDeleteTarget(quiz)}
 									>

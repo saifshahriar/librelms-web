@@ -148,11 +148,11 @@ export default function CourseDetailPage() {
 					<Card>
 						<CardBody className="space-y-3">
 							<div className="flex flex-wrap gap-2">
-								<Badge tone="brand">
+								<Badge variant="brand">
 									{course.lessonIds.length} lessons
 								</Badge>
 								{course.quizIds.length > 0 && (
-									<Badge tone="purple">
+									<Badge variant="purple">
 										{course.quizIds.length} quizzes
 									</Badge>
 								)}

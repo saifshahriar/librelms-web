@@ -63,7 +63,7 @@ export default function BlogListPage() {
 										<div>
 											<div className="flex items-center gap-2">
 												{post.publishedAt === null && (
-													<Badge tone="warning">
+													<Badge variant="warning">
 														Draft
 													</Badge>
 												)}

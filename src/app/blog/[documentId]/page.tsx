@@ -63,7 +63,7 @@ export default function BlogPostPage() {
 					).toLocaleDateString()}
 				</span>
 				{post.publishedAt === null && (
-					<Badge tone="warning">Draft</Badge>
+					<Badge variant="warning">Draft</Badge>
 				)}
 			</div>
 			<h1 className="mt-2 text-page-title">{post.title}</h1>

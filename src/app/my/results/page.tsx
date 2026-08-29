@@ -66,7 +66,7 @@ function ResultsHistory() {
 									</div>
 									<div className="flex items-center gap-3">
 										<Badge
-											tone={
+											variant={
 												percent >= 80
 													? "success"
 													: percent >= 50

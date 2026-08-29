@@ -5,6 +5,10 @@ import { RequireRole } from "@/components/auth/require-role";
 import {
 	Badge,
 	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
 	Table,
 	TBody,
 	TD,
@@ -95,38 +99,39 @@ function UserManagement() {
 								<TD className="text-ink-muted">{u.username}</TD>
 								<TD className="text-ink-muted">{u.email}</TD>
 								<TD>
-									<Badge tone={roleTone(u.role)}>
+									<Badge variant={roleTone(u.role)}>
 										{ROLE_LABELS[u.role]}
 									</Badge>
 								</TD>
 								<TD>
 									{me?.id === u.id ? (
-										<span className="text-xs text-ink-faint">
+										<span className="text-xs text-muted-foreground">
 											That&apos;s you
 										</span>
 									) : (
 										<Select
 											value={u.role}
 											disabled={savingId === u.id}
-											onChange={(e) =>
-												changeRole(
-													u.id,
-													e.target.value as Role,
-												)
+											onValueChange={(v) =>
+												changeRole(u.id, v as Role)
 											}
-											className="max-w-44"
 											aria-label={`Change role for ${u.username}`}
 										>
-											{Object.entries(ROLE_LABELS).map(
-												([value, label]) => (
-													<option
+											<SelectTrigger className="w-44">
+												<SelectValue />
+											</SelectTrigger>
+											<SelectContent>
+												{Object.entries(
+													ROLE_LABELS,
+												).map(([value, label]) => (
+													<SelectItem
 														key={value}
 														value={value}
 													>
 														{label}
-													</option>
-												),
-											)}
+													</SelectItem>
+												))}
+											</SelectContent>
 										</Select>
 									)}
 								</TD>

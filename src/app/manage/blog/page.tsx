@@ -227,11 +227,11 @@ function BlogManage() {
 										</td>
 										<td className="px-4 py-3">
 											{post.publishedAt ? (
-												<Badge tone="success">
+												<Badge variant="success">
 													Published
 												</Badge>
 											) : (
-												<Badge tone="warning">
+												<Badge variant="warning">
 													Draft
 												</Badge>
 											)}
@@ -264,7 +264,7 @@ function BlogManage() {
 															: "Publish"}
 													</Button>
 													<Button
-														variant="danger"
+														variant="destructive"
 														size="sm"
 														onClick={() =>
 															setDeletePost(post)
