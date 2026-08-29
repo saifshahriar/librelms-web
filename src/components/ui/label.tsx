@@ -1,11 +1,24 @@
-import type { LabelHTMLAttributes } from "react";
+"use client";
 
-export function Label({
-	className = "",
+import { Label as LabelPrimitive } from "radix-ui";
+import type * as React from "react";
+
+import { cn } from "@/lib/utils";
+
+function Label({
+	className,
 	...props
-}: LabelHTMLAttributes<HTMLLabelElement>) {
+}: React.ComponentProps<typeof LabelPrimitive.Root>) {
 	return (
-		// biome-ignore lint/a11y/noLabelWithoutControl: generic passthrough label; association happens at usage site via htmlFor
-		<label className={`label-base ${className}`} {...props} />
+		<LabelPrimitive.Root
+			data-slot="label"
+			className={cn(
+				"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+				className,
+			)}
+			{...props}
+		/>
 	);
 }
+
+export { Label };
