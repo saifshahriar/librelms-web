@@ -1,5 +1,5 @@
-import type { AuthUser, User } from "@/lib/types";
 import { setAuthToken } from "@/lib/api/client";
+import type { AuthUser, User } from "@/lib/types";
 
 const STORAGE_KEY = "librelms.auth.v1";
 
