@@ -1,11 +1,13 @@
 "use client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { RequireRole } from "@/components/auth/require-role";
 import { Button, Card, CardBody, ProgressBar } from "@/components/ui";
 import { quizService } from "@/lib/api";
+import { faArrowLeft } from "@/lib/icons";
 import type { Quiz, QuizResult } from "@/lib/types";
 
 function QuizTaker() {
@@ -66,9 +68,10 @@ function QuizTaker() {
 				<h1 className="text-page-title">{error}</h1>
 				<Link
 					href="/my/courses"
-					className="mt-4 inline-block text-brand-600 hover:underline"
+					className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:underline"
 				>
-					← Back to My Courses
+					<FontAwesomeIcon icon={faArrowLeft} className="size-3.5" />
+					Back to My Courses
 				</Link>
 			</div>
 		);
@@ -90,7 +93,7 @@ function QuizTaker() {
 							{result.score} / {result.total}
 						</div>
 						<p className="mt-2 text-muted-foreground">
-							{result.score}/{result.total} correct —{" "}
+							{result.score}/{result.total} correct,{" "}
 							{scorePercent}%
 						</p>
 						<div className="mx-auto mt-4 max-w-sm">
@@ -116,7 +119,7 @@ function QuizTaker() {
 											You answered:{" "}
 											{chosen >= 0
 												? question.options[chosen]?.text
-												: "—"}
+												: "Skipped"}
 										</div>
 										{chosen !== correct && (
 											<div className="mt-0.5 text-sm text-emerald-700">
@@ -155,17 +158,18 @@ function QuizTaker() {
 		<div className="container-page max-w-2xl py-10">
 			<Link
 				href={`/courses/${courseId}`}
-				className="text-sm text-brand-600 hover:underline"
+				className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:underline"
 			>
-				← Back to course
+				<FontAwesomeIcon icon={faArrowLeft} className="size-3.5" />
+				Back to course
 			</Link>
 			<h1 className="mt-3 text-page-title">{quiz.title}</h1>
 			<p className="mt-1 text-muted-foreground">
-				{quiz.questions.length} questions · answer all and submit for an
+				{quiz.questions.length} questions, answer all and submit for an
 				instant score.
 			</p>
 
-			<div className="mt-8 space-y-4">
+			<div className="mt-8 space-y-5">
 				{quiz.questions.map((question, qi) => (
 					<Card key={question.id}>
 						<CardBody>
@@ -212,7 +216,7 @@ function QuizTaker() {
 				))}
 			</div>
 
-			<div className="mt-6 flex items-center justify-between">
+			<div className="mt-8 flex items-center justify-between">
 				<div className="text-sm text-muted-foreground">
 					{answeredCount} of {quiz.questions.length} answered
 					<span className="ml-3 inline-block w-24 align-middle">

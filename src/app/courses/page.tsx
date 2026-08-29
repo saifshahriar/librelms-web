@@ -1,9 +1,11 @@
 "use client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Badge, Card, CardBody, Input } from "@/components/ui";
 import { courseService } from "@/lib/api";
+import { faArrowRight } from "@/lib/icons";
 import type { Course } from "@/lib/types";
 
 export default function CoursesPage() {
@@ -39,7 +41,7 @@ export default function CoursesPage() {
 				</div>
 				<Input
 					type="search"
-					placeholder="Search courses…"
+					placeholder="Search courses"
 					value={query}
 					onChange={(e) => setQuery(e.target.value)}
 					className="sm:max-w-xs"
@@ -81,8 +83,12 @@ export default function CoursesPage() {
 									<p className="mt-1 line-clamp-3 text-sm text-muted-foreground">
 										{course.description}
 									</p>
-									<p className="mt-4 text-sm font-medium text-brand-600">
-										View course →
+									<p className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600">
+										View course
+										<FontAwesomeIcon
+											icon={faArrowRight}
+											className="size-3"
+										/>
 									</p>
 								</CardBody>
 							</Card>

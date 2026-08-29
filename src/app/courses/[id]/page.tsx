@@ -1,5 +1,6 @@
 "use client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -13,6 +14,7 @@ import {
 } from "@/components/ui";
 import { courseService, enrollmentService, lessonService } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
+import { faArrowLeft, faArrowRight } from "@/lib/icons";
 import type { Course, Lesson } from "@/lib/types";
 
 export default function CourseDetailPage() {
@@ -27,6 +29,9 @@ export default function CourseDetailPage() {
 	const [enrolling, setEnrolling] = useState(false);
 	const [enrolled, setEnrolled] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const [permissionMessage, setPermissionMessage] = useState<string | null>(
+		null,
+	);
 
 	useEffect(() => {
 		async function load() {
@@ -40,6 +45,15 @@ export default function CourseDetailPage() {
 						setEnrolled(true);
 					} catch {
 						setEnrolled(false);
+					}
+				} else if (user?.role === "instructor") {
+					try {
+						const l = await lessonService.list(courseId);
+						setLessons(l.data);
+					} catch {
+						setPermissionMessage(
+							"You don't have permission to view this course",
+						);
 					}
 				}
 			} finally {
@@ -82,9 +96,10 @@ export default function CourseDetailPage() {
 		<div className="container-page py-10">
 			<Link
 				href="/courses"
-				className="text-sm text-brand-600 hover:underline"
+				className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:underline"
 			>
-				← Back to courses
+				<FontAwesomeIcon icon={faArrowLeft} className="size-3.5" />
+				Back to courses
 			</Link>
 			<div className="mt-4 grid gap-6 lg:grid-cols-[2fr_1fr]">
 				<div>
@@ -98,20 +113,24 @@ export default function CourseDetailPage() {
 							<CardTitle>Lessons</CardTitle>
 						</CardHeader>
 						<CardBody className="p-0">
-							{user?.role === "student" && !enrolled ? (
-								<p className="px-5 py-8 text-center text-sm text-muted-foreground">
+							{permissionMessage ? (
+								<p className="px-6 py-10 text-center text-sm text-muted-foreground">
+									{permissionMessage}
+								</p>
+							) : user?.role === "student" && !enrolled ? (
+								<p className="px-6 py-10 text-center text-sm text-muted-foreground">
 									Enroll to access the lessons of this course.
 								</p>
 							) : lessons.length === 0 ? (
-								<p className="px-5 py-8 text-center text-sm text-muted-foreground">
+								<p className="px-6 py-10 text-center text-sm text-muted-foreground">
 									No lessons yet.
 								</p>
 							) : (
-								<ol className="divide-y divide-edge">
+								<ol className="divide-y divide-border">
 									{lessons.map((lesson) => (
 										<li
 											key={lesson.id}
-											className="flex items-center gap-3 px-5 py-3"
+											className="flex items-center gap-3 px-5 py-3.5"
 										>
 											<span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-semibold text-brand-700">
 												{lesson.order}
@@ -133,7 +152,15 @@ export default function CourseDetailPage() {
 														href={`/courses/${courseId}/learn/${lesson.id}`}
 														className="text-sm font-medium text-brand-600 hover:underline"
 													>
-														Open →
+														<span className="inline-flex items-center gap-1">
+															Open
+															<FontAwesomeIcon
+																icon={
+																	faArrowRight
+																}
+																className="size-3"
+															/>
+														</span>
 													</Link>
 												)}
 										</li>
@@ -175,7 +202,7 @@ export default function CourseDetailPage() {
 										href="/my/courses"
 										className="block rounded-lg bg-emerald-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-emerald-700"
 									>
-										Enrolled ✓ — go to My Courses
+										Enrolled, go to My Courses
 									</Link>
 								) : (
 									<Button
@@ -191,7 +218,10 @@ export default function CourseDetailPage() {
 							)}
 							{(user?.role === "admin" ||
 								user?.role === "content_manager" ||
-								user?.role === "instructor") && (
+								(user?.role === "instructor" &&
+									course.instructorIds.includes(
+										user.id,
+									))) && (
 								<Link
 									href={`/manage/courses/${courseId}`}
 									className="block rounded-lg border border-border px-4 py-2 text-center text-sm font-medium hover:bg-muted/50"

@@ -1,5 +1,6 @@
 "use client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -11,6 +12,7 @@ import {
 	type LessonCompletion,
 	lessonService,
 } from "@/lib/api";
+import { faArrowLeft, faArrowRight, faCheck } from "@/lib/icons";
 import type { Course, CourseProgress, Lesson } from "@/lib/types";
 
 function LessonViewer() {
@@ -92,9 +94,9 @@ function LessonViewer() {
 				</h1>
 				<Link
 					href="/my/courses"
-					className="mt-4 inline-block text-brand-600 hover:underline"
+					className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:underline"
 				>
-					← Back to My Courses
+					Back to My Courses
 				</Link>
 			</div>
 		);
@@ -105,9 +107,10 @@ function LessonViewer() {
 			<div>
 				<Link
 					href={`/courses/${courseId}`}
-					className="text-sm text-brand-600 hover:underline"
+					className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:underline"
 				>
-					← {course.title}
+					<FontAwesomeIcon icon={faArrowLeft} className="size-3.5" />
+					{course.title}
 				</Link>
 				<div className="mt-3 flex items-center gap-3">
 					<Badge variant="brand">Lesson {lesson.order}</Badge>
@@ -149,20 +152,42 @@ function LessonViewer() {
 							href={`/courses/${courseId}/learn/${prev.id}`}
 							className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted/50"
 						>
-							← Previous
+							<span className="inline-flex items-center gap-1.5">
+								<FontAwesomeIcon
+									icon={faArrowLeft}
+									className="size-3.5"
+								/>
+								Previous
+							</span>
 						</Link>
 					) : (
 						<span />
 					)}
 					<Button onClick={markComplete} loading={marking}>
-						{completedThis ? "Completed ✓" : "Mark as complete"}
+						{completedThis ? (
+							<span className="inline-flex items-center gap-1.5">
+								<FontAwesomeIcon
+									icon={faCheck}
+									className="size-3.5"
+								/>
+								Completed
+							</span>
+						) : (
+							"Mark as complete"
+						)}
 					</Button>
 					{next ? (
 						<Link
 							href={`/courses/${courseId}/learn/${next.id}`}
 							className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted/50"
 						>
-							Next →
+							<span className="inline-flex items-center gap-1.5">
+								Next
+								<FontAwesomeIcon
+									icon={faArrowRight}
+									className="size-3.5"
+								/>
+							</span>
 						</Link>
 					) : (
 						<span />
@@ -190,7 +215,7 @@ function LessonViewer() {
 								<ProgressBar value={progress.percent} />
 							</>
 						)}
-						<ol className="mt-4 space-y-1">
+						<ol className="mt-4 space-y-1.5">
 							{ordered.map((l) => {
 								const done = completedLessonIds.has(l.id);
 								const current = l.id === lessonId;
@@ -211,7 +236,14 @@ function LessonViewer() {
 														: "bg-slate-100 text-muted-foreground/70"
 												}`}
 											>
-												{done ? "✓" : l.order}
+												{done ? (
+													<FontAwesomeIcon
+														icon={faCheck}
+														className="size-2.5"
+													/>
+												) : (
+													l.order
+												)}
 											</span>
 											<span className="truncate">
 												{l.title}
