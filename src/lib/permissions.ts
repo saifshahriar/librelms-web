@@ -1,7 +1,3 @@
-"use client";
-
-import { useAuth } from "@/lib/auth-context";
-import { isStaff } from "@/lib/auth-storage";
 import type { Role } from "@/lib/types";
 
 const STAFF: Role[] = ["admin", "content_manager"];
@@ -20,7 +16,7 @@ export function ownsCourse(
 	course: { instructorIds: number[] },
 ): boolean {
 	if (!user) return false;
-	if (isStaff(user)) return true;
+	if (user.role === "admin" || user.role === "content_manager") return true;
 	if (user.role !== "instructor") return false;
 	return course.instructorIds.includes(user.id);
 }
@@ -45,5 +41,3 @@ export function roleTone(role: Role) {
 			return "brand" as const;
 	}
 }
-
-export { useAuth };
