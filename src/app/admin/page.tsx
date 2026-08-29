@@ -12,7 +12,9 @@ function StatCard({ label, value }: { label: string; value: number | string }) {
 		<Card>
 			<CardBody>
 				<div className="text-3xl font-bold text-brand-700">{value}</div>
-				<div className="mt-1 text-sm text-ink-muted">{label}</div>
+				<div className="mt-1 text-sm text-muted-foreground">
+					{label}
+				</div>
 			</CardBody>
 		</Card>
 	);
@@ -32,7 +34,7 @@ function AdminDashboard() {
 	if (loading) {
 		return (
 			<div className="container-page py-10">
-				<div className="card-surface h-64 animate-pulse" />
+				<div className="border border-border rounded-xl bg-card h-64 animate-pulse" />
 			</div>
 		);
 	}
@@ -41,7 +43,7 @@ function AdminDashboard() {
 	return (
 		<div className="container-page py-10">
 			<h1 className="text-page-title mb-2">Admin dashboard</h1>
-			<p className="mb-8 text-ink-muted">Platform overview.</p>
+			<p className="mb-8 text-muted-foreground">Platform overview.</p>
 
 			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				<StatCard label="Total users" value={stats.totalUsers} />
@@ -86,13 +88,15 @@ function AdminDashboard() {
 					<CardBody>
 						<ul className="space-y-2 text-sm">
 							<li className="flex justify-between">
-								<span className="text-ink-muted">Quizzes</span>
+								<span className="text-muted-foreground">
+									Quizzes
+								</span>
 								<span className="font-semibold">
 									{stats.totalQuizzes}
 								</span>
 							</li>
 							<li className="flex justify-between">
-								<span className="text-ink-muted">
+								<span className="text-muted-foreground">
 									Published posts
 								</span>
 								<span className="font-semibold">
@@ -100,7 +104,7 @@ function AdminDashboard() {
 								</span>
 							</li>
 							<li className="flex justify-between">
-								<span className="text-ink-muted">
+								<span className="text-muted-foreground">
 									Draft posts
 								</span>
 								<span className="font-semibold">
@@ -121,13 +125,13 @@ function AdminDashboard() {
 				</Link>
 				<Link
 					href="/manage/courses"
-					className="rounded-lg border border-edge px-4 py-2 text-sm font-medium hover:bg-canvas"
+					className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted/50"
 				>
 					Manage courses
 				</Link>
 				<Link
 					href="/manage/blog"
-					className="rounded-lg border border-edge px-4 py-2 text-sm font-medium hover:bg-canvas"
+					className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted/50"
 				>
 					Manage blog
 				</Link>

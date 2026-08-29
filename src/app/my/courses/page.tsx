@@ -23,7 +23,7 @@ function MyCourses() {
 	return (
 		<div className="container-page py-10">
 			<h1 className="text-page-title mb-2">My Courses</h1>
-			<p className="mb-8 text-ink-muted">
+			<p className="mb-8 text-muted-foreground">
 				Courses you are enrolled in, with your progress.
 			</p>
 
@@ -32,13 +32,13 @@ function MyCourses() {
 					{[0, 1].map((i) => (
 						<div
 							key={i}
-							className="card-surface h-40 animate-pulse"
+							className="border border-border rounded-xl bg-card h-40 animate-pulse"
 						/>
 					))}
 				</div>
 			) : items.length === 0 ? (
-				<div className="card-surface px-6 py-16 text-center">
-					<p className="text-ink-muted">
+				<div className="border border-border rounded-xl bg-card px-6 py-16 text-center">
+					<p className="text-muted-foreground">
 						You haven&apos;t enrolled in any course yet.
 					</p>
 					<Link
@@ -59,12 +59,12 @@ function MyCourses() {
 								<h3 className="text-lg font-semibold">
 									{course.title}
 								</h3>
-								<p className="mt-1 line-clamp-2 text-sm text-ink-muted">
+								<p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
 									{course.description}
 								</p>
 								<div className="mt-4">
 									<div className="mb-1.5 flex items-center justify-between text-sm">
-										<span className="text-ink-muted">
+										<span className="text-muted-foreground">
 											{progress.completedLessons} of{" "}
 											{progress.totalLessons} lessons done
 										</span>
@@ -83,13 +83,13 @@ function MyCourses() {
 											Continue learning
 										</Link>
 									) : (
-										<span className="flex-1 rounded-lg bg-slate-100 px-4 py-2 text-center text-sm font-medium text-ink-faint">
+										<span className="flex-1 rounded-lg bg-slate-100 px-4 py-2 text-center text-sm font-medium text-muted-foreground/70">
 											No lessons yet
 										</span>
 									)}
 									<Link
 										href={`/courses/${course.id}`}
-										className="rounded-lg border border-edge px-4 py-2 text-sm font-medium hover:bg-canvas"
+										className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted/50"
 									>
 										Overview
 									</Link>

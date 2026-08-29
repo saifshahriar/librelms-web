@@ -348,10 +348,13 @@ function QuizModal({
 					/>
 				</div>
 				{questions.map((q, qi) => (
-					// biome-ignore lint/suspicious/noArrayIndexKey: draft rows are addressed by index in state
-					<div key={qi} className="rounded-lg border border-edge p-3">
+					<div
+						// biome-ignore lint/suspicious/noArrayIndexKey: draft rows are addressed by index in state
+						key={qi}
+						className="rounded-lg border border-border p-3"
+					>
 						<div className="flex items-center gap-2">
-							<span className="text-xs font-semibold text-ink-muted">
+							<span className="text-xs font-semibold text-muted-foreground">
 								Q{qi + 1}
 							</span>
 							<Input
@@ -395,7 +398,7 @@ function QuizModal({
 									<button
 										type="button"
 										onClick={() => removeOption(qi, oi)}
-										className="rounded p-1 text-xs text-ink-faint hover:bg-canvas hover:text-red-500"
+										className="rounded p-1 text-xs text-muted-foreground/70 hover:bg-muted/50 hover:text-red-500"
 										aria-label={`Remove option ${oi + 1}`}
 									>
 										✕
@@ -422,7 +425,7 @@ function QuizModal({
 				<button
 					type="button"
 					onClick={addQuestion}
-					className="w-full rounded-lg border border-dashed border-edge py-2 text-sm font-medium text-ink-muted hover:bg-canvas"
+					className="w-full rounded-lg border border-dashed border-border py-2 text-sm font-medium text-muted-foreground hover:bg-muted/50"
 				>
 					+ Add question
 				</button>
@@ -483,7 +486,7 @@ function CourseManagePageInner() {
 	if (loading) {
 		return (
 			<div className="container-page py-10">
-				<div className="card-surface h-96 animate-pulse" />
+				<div className="border border-border rounded-xl bg-card h-96 animate-pulse" />
 			</div>
 		);
 	}
@@ -535,7 +538,7 @@ function CourseManagePageInner() {
 			<div className="mt-3 flex flex-wrap items-start justify-between gap-4">
 				<div>
 					<h1 className="text-page-title">{course.title}</h1>
-					<p className="mt-1 max-w-2xl text-ink-muted">
+					<p className="mt-1 max-w-2xl text-muted-foreground">
 						{course.description}
 					</p>
 				</div>
@@ -566,11 +569,11 @@ function CourseManagePageInner() {
 						</Button>
 					</div>
 					{lessons.length === 0 ? (
-						<p className="py-6 text-center text-sm text-ink-muted">
+						<p className="py-6 text-center text-sm text-muted-foreground">
 							No lessons yet — add the first one.
 						</p>
 					) : (
-						<ol className="divide-y divide-edge rounded-lg border border-edge">
+						<ol className="divide-y divide-edge rounded-lg border border-border">
 							{[...lessons]
 								.sort((a, b) => a.order - b.order)
 								.map((lesson) => (
@@ -585,7 +588,7 @@ function CourseManagePageInner() {
 											<div className="truncate font-medium">
 												{lesson.title}
 											</div>
-											<div className="text-xs text-ink-faint">
+											<div className="text-xs text-muted-foreground/70">
 												{lesson.content.kind === "video"
 													? "Video"
 													: "Text"}
@@ -635,11 +638,11 @@ function CourseManagePageInner() {
 						</Button>
 					</div>
 					{quizzes.length === 0 ? (
-						<p className="py-6 text-center text-sm text-ink-muted">
+						<p className="py-6 text-center text-sm text-muted-foreground">
 							No quizzes yet — create an MCQ quiz for this course.
 						</p>
 					) : (
-						<ul className="divide-y divide-edge rounded-lg border border-edge">
+						<ul className="divide-y divide-edge rounded-lg border border-border">
 							{quizzes.map((quiz) => (
 								<li
 									key={quiz.id}
@@ -649,7 +652,7 @@ function CourseManagePageInner() {
 										<div className="truncate font-medium">
 											{quiz.title}
 										</div>
-										<div className="text-xs text-ink-faint">
+										<div className="text-xs text-muted-foreground/70">
 											{quiz.questions.length} questions
 										</div>
 									</div>
@@ -684,7 +687,7 @@ function CourseManagePageInner() {
 						Student progress ({students.length} enrolled)
 					</h2>
 					{students.length === 0 ? (
-						<p className="py-6 text-center text-sm text-ink-muted">
+						<p className="py-6 text-center text-sm text-muted-foreground">
 							No students enrolled yet.
 						</p>
 					) : (
@@ -698,12 +701,12 @@ function CourseManagePageInner() {
 										<div className="font-medium">
 											{s.user.fullName ?? s.user.username}
 										</div>
-										<div className="text-xs text-ink-faint">
+										<div className="text-xs text-muted-foreground/70">
 											{s.user.email}
 										</div>
 									</div>
 									<div className="w-48">
-										<div className="mb-1 flex justify-between text-xs text-ink-muted">
+										<div className="mb-1 flex justify-between text-xs text-muted-foreground">
 											<span>
 												{s.completedLessons}/
 												{s.totalLessons} lessons

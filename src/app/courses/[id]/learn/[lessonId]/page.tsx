@@ -79,7 +79,7 @@ function LessonViewer() {
 	if (loading) {
 		return (
 			<div className="container-page py-10">
-				<div className="card-surface h-96 animate-pulse" />
+				<div className="border border-border rounded-xl bg-card h-96 animate-pulse" />
 			</div>
 		);
 	}
@@ -136,7 +136,7 @@ function LessonViewer() {
 								/>
 							</div>
 						) : (
-							<div className="whitespace-pre-line leading-relaxed text-ink">
+							<div className="whitespace-pre-line leading-relaxed text-foreground">
 								{lesson.content.body}
 							</div>
 						)}
@@ -147,7 +147,7 @@ function LessonViewer() {
 					{prev ? (
 						<Link
 							href={`/courses/${courseId}/learn/${prev.id}`}
-							className="rounded-lg border border-edge px-4 py-2 text-sm font-medium hover:bg-canvas"
+							className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted/50"
 						>
 							← Previous
 						</Link>
@@ -160,7 +160,7 @@ function LessonViewer() {
 					{next ? (
 						<Link
 							href={`/courses/${courseId}/learn/${next.id}`}
-							className="rounded-lg border border-edge px-4 py-2 text-sm font-medium hover:bg-canvas"
+							className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted/50"
 						>
 							Next →
 						</Link>
@@ -173,13 +173,13 @@ function LessonViewer() {
 			<aside>
 				<Card>
 					<CardBody>
-						<h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">
+						<h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
 							Course progress
 						</h3>
 						{progress && (
 							<>
 								<div className="mb-1.5 flex items-center justify-between text-sm">
-									<span className="text-ink-muted">
+									<span className="text-muted-foreground">
 										{progress.completedLessons}/
 										{progress.totalLessons} lessons
 									</span>
@@ -201,14 +201,14 @@ function LessonViewer() {
 											className={`flex items-center gap-2 rounded-md px-2 py-1.5 text-sm ${
 												current
 													? "bg-brand-50 font-medium text-brand-700"
-													: "text-ink-muted hover:bg-canvas"
+													: "text-muted-foreground hover:bg-muted/50"
 											}`}
 										>
 											<span
 												className={`flex h-5 w-5 items-center justify-center rounded-full text-xs ${
 													done
 														? "bg-emerald-100 text-emerald-700"
-														: "bg-slate-100 text-ink-faint"
+														: "bg-slate-100 text-muted-foreground/70"
 												}`}
 											>
 												{done ? "✓" : l.order}

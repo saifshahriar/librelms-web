@@ -29,12 +29,12 @@ export default function HomePage() {
 
 	return (
 		<div>
-			<section className="border-b border-edge bg-gradient-to-b from-brand-50 to-canvas">
+			<section className="border-b border-border bg-gradient-to-b from-brand-50 to-canvas">
 				<div className="container-page py-16 text-center">
 					<h1 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
 						Learn at your own pace, teach with full control
 					</h1>
-					<p className="mx-auto mt-4 max-w-xl text-ink-muted">
+					<p className="mx-auto mt-4 max-w-xl text-muted-foreground">
 						LibreLMS is an open learning platform: enroll in
 						courses, watch lessons, take quizzes and track your
 						progress — or create courses as an instructor.
@@ -48,7 +48,7 @@ export default function HomePage() {
 						</Link>
 						<Link
 							href="/register"
-							className="rounded-lg border border-edge bg-surface px-5 py-2.5 text-sm font-medium hover:bg-canvas"
+							className="rounded-lg border border-border bg-background px-5 py-2.5 text-sm font-medium hover:bg-muted/50"
 						>
 							Create free account
 						</Link>
@@ -71,7 +71,7 @@ export default function HomePage() {
 						{[0, 1, 2].map((i) => (
 							<div
 								key={i}
-								className="card-surface h-40 animate-pulse"
+								className="border border-border rounded-xl bg-card h-40 animate-pulse"
 							/>
 						))}
 					</div>
@@ -93,7 +93,7 @@ export default function HomePage() {
 										<h3 className="font-semibold">
 											{course.title}
 										</h3>
-										<p className="mt-1 line-clamp-2 text-sm text-ink-muted">
+										<p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
 											{course.description}
 										</p>
 									</CardBody>
@@ -122,10 +122,10 @@ export default function HomePage() {
 									<h3 className="font-semibold">
 										{post.title}
 									</h3>
-									<p className="mt-1 line-clamp-3 text-sm text-ink-muted">
+									<p className="mt-1 line-clamp-3 text-sm text-muted-foreground">
 										{post.body}
 									</p>
-									<p className="mt-3 text-xs text-ink-faint">
+									<p className="mt-3 text-xs text-muted-foreground/70">
 										{post.authorName} ·{" "}
 										{new Date(
 											post.publishedAt ?? post.createdAt,

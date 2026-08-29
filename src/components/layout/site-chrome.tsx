@@ -45,7 +45,7 @@ export function SiteHeader() {
 	const links = navLinksFor(user?.role);
 
 	return (
-		<header className="sticky top-0 z-40 border-b border-edge bg-surface/90 backdrop-blur">
+		<header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
 			<div className="container-page flex h-14 items-center justify-between gap-4">
 				<div className="flex items-center gap-6">
 					<Link
@@ -81,7 +81,7 @@ export function SiteHeader() {
 								className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
 									pathname === l.href
 										? "bg-brand-50 text-brand-700"
-										: "text-ink-muted hover:bg-canvas hover:text-ink"
+										: "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
 								}`}
 							>
 								{l.label}
@@ -96,7 +96,7 @@ export function SiteHeader() {
 								<div className="text-sm font-medium">
 									{user.fullName ?? user.username}
 								</div>
-								<div className="text-xs text-ink-muted">
+								<div className="text-xs text-muted-foreground">
 									{ROLE_LABELS[user.role]}
 								</div>
 							</div>
@@ -122,7 +122,7 @@ export function SiteHeader() {
 					)}
 					<button
 						type="button"
-						className="rounded-md p-2 text-ink-muted hover:bg-canvas sm:hidden"
+						className="rounded-md p-2 text-muted-foreground hover:bg-muted/50 sm:hidden"
 						onClick={() => setOpen((v) => !v)}
 						aria-label="Toggle menu"
 					>
@@ -152,7 +152,7 @@ export function SiteHeader() {
 				</div>
 			</div>
 			{open && (
-				<nav className="border-t border-edge bg-surface px-4 py-2 sm:hidden">
+				<nav className="border-t border-border bg-background px-4 py-2 sm:hidden">
 					{links.map((l) => (
 						<Link
 							key={l.href}
@@ -161,7 +161,7 @@ export function SiteHeader() {
 							className={`block rounded-md px-3 py-2 text-sm font-medium ${
 								pathname === l.href
 									? "bg-brand-50 text-brand-700"
-									: "text-ink-muted hover:bg-canvas"
+									: "text-muted-foreground hover:bg-muted/50"
 							}`}
 						>
 							{l.label}
@@ -174,7 +174,7 @@ export function SiteHeader() {
 								logout();
 								setOpen(false);
 							}}
-							className="block w-full rounded-md px-3 py-2 text-left text-sm font-medium text-ink-muted hover:bg-canvas"
+							className="block w-full rounded-md px-3 py-2 text-left text-sm font-medium text-muted-foreground hover:bg-muted/50"
 						>
 							Log out
 						</button>
@@ -187,8 +187,8 @@ export function SiteHeader() {
 
 export function SiteFooter() {
 	return (
-		<footer className="border-t border-edge bg-surface">
-			<div className="container-page flex flex-col items-center justify-between gap-2 py-6 text-sm text-ink-muted sm:flex-row">
+		<footer className="border-t border-border bg-background">
+			<div className="container-page flex flex-col items-center justify-between gap-2 py-6 text-sm text-muted-foreground sm:flex-row">
 				<div>LibreLMS — open learning platform</div>
 				<div>Built with Next.js</div>
 			</div>

@@ -26,14 +26,14 @@ export default function BlogListPage() {
 			<div className="mb-8 flex items-end justify-between">
 				<div>
 					<h1 className="text-page-title">Blog</h1>
-					<p className="mt-1 text-ink-muted">
+					<p className="mt-1 text-muted-foreground">
 						News, guides and announcements from the LibreLMS team.
 					</p>
 				</div>
 				{showDrafts && (
 					<Link
 						href="/manage/blog"
-						className="rounded-lg border border-edge px-4 py-2 text-sm font-medium hover:bg-canvas"
+						className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted/50"
 					>
 						Manage posts
 					</Link>
@@ -45,12 +45,12 @@ export default function BlogListPage() {
 					{[0, 1, 2].map((i) => (
 						<div
 							key={i}
-							className="card-surface h-28 animate-pulse"
+							className="border border-border rounded-xl bg-card h-28 animate-pulse"
 						/>
 					))}
 				</div>
 			) : posts.length === 0 ? (
-				<div className="card-surface px-6 py-16 text-center text-ink-muted">
+				<div className="border border-border rounded-xl bg-card px-6 py-16 text-center text-muted-foreground">
 					No posts yet.
 				</div>
 			) : (
@@ -71,10 +71,10 @@ export default function BlogListPage() {
 											<h2 className="mt-1 text-lg font-semibold">
 												{post.title}
 											</h2>
-											<p className="mt-1 line-clamp-2 text-sm text-ink-muted">
+											<p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
 												{post.body}
 											</p>
-											<p className="mt-2 text-xs text-ink-faint">
+											<p className="mt-2 text-xs text-muted-foreground/70">
 												{post.authorName} ·{" "}
 												{new Date(
 													post.publishedAt ??

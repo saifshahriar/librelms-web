@@ -36,9 +36,9 @@ function LoginForm() {
 
 	return (
 		<div className="container-page flex min-h-[70vh] items-center justify-center">
-			<div className="card-surface w-full max-w-md p-6">
+			<div className="border border-border rounded-xl bg-card w-full max-w-md p-6">
 				<h1 className="text-page-title mb-1">Log in</h1>
-				<p className="mb-6 text-sm text-ink-muted">
+				<p className="mb-6 text-sm text-muted-foreground">
 					Welcome back to LibreLMS.
 				</p>
 				<form onSubmit={onSubmit} className="space-y-4">
@@ -72,7 +72,7 @@ function LoginForm() {
 						Log in
 					</Button>
 				</form>
-				<p className="mt-4 text-center text-sm text-ink-muted">
+				<p className="mt-4 text-center text-sm text-muted-foreground">
 					No account yet?{" "}
 					<Link
 						href="/register"
@@ -81,8 +81,8 @@ function LoginForm() {
 						Sign up
 					</Link>
 				</p>
-				<div className="mt-6 rounded-lg bg-canvas p-3 text-xs text-ink-muted">
-					<div className="mb-1 font-semibold text-ink">
+				<div className="mt-6 rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground">
+					<div className="mb-1 font-semibold text-foreground">
 						Demo accounts
 					</div>
 					<div>admin@librelms.dev / admin123</div>

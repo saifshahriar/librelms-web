@@ -65,14 +65,14 @@ export default function CourseDetailPage() {
 	if (loading) {
 		return (
 			<div className="container-page py-10">
-				<div className="card-surface h-64 animate-pulse" />
+				<div className="border border-border rounded-xl bg-card h-64 animate-pulse" />
 			</div>
 		);
 	}
 
 	if (!course) {
 		return (
-			<div className="container-page py-20 text-center text-ink-muted">
+			<div className="container-page py-20 text-center text-muted-foreground">
 				Course not found.
 			</div>
 		);
@@ -89,7 +89,7 @@ export default function CourseDetailPage() {
 			<div className="mt-4 grid gap-6 lg:grid-cols-[2fr_1fr]">
 				<div>
 					<h1 className="text-page-title">{course.title}</h1>
-					<p className="mt-3 whitespace-pre-line text-ink-muted">
+					<p className="mt-3 whitespace-pre-line text-muted-foreground">
 						{course.description}
 					</p>
 
@@ -99,11 +99,11 @@ export default function CourseDetailPage() {
 						</CardHeader>
 						<CardBody className="p-0">
 							{user?.role === "student" && !enrolled ? (
-								<p className="px-5 py-8 text-center text-sm text-ink-muted">
+								<p className="px-5 py-8 text-center text-sm text-muted-foreground">
 									Enroll to access the lessons of this course.
 								</p>
 							) : lessons.length === 0 ? (
-								<p className="px-5 py-8 text-center text-sm text-ink-muted">
+								<p className="px-5 py-8 text-center text-sm text-muted-foreground">
 									No lessons yet.
 								</p>
 							) : (
@@ -120,7 +120,7 @@ export default function CourseDetailPage() {
 												<div className="truncate font-medium">
 													{lesson.title}
 												</div>
-												<div className="text-xs text-ink-faint">
+												<div className="text-xs text-muted-foreground/70">
 													{lesson.content.kind ===
 													"video"
 														? "Video"
@@ -194,7 +194,7 @@ export default function CourseDetailPage() {
 								user?.role === "instructor") && (
 								<Link
 									href={`/manage/courses/${courseId}`}
-									className="block rounded-lg border border-edge px-4 py-2 text-center text-sm font-medium hover:bg-canvas"
+									className="block rounded-lg border border-border px-4 py-2 text-center text-sm font-medium hover:bg-muted/50"
 								>
 									Manage this course
 								</Link>

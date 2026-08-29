@@ -55,7 +55,7 @@ function QuizTaker() {
 	if (loading) {
 		return (
 			<div className="container-page py-10">
-				<div className="card-surface h-96 animate-pulse" />
+				<div className="border border-border rounded-xl bg-card h-96 animate-pulse" />
 			</div>
 		);
 	}
@@ -89,7 +89,7 @@ function QuizTaker() {
 						<div className="mt-6 text-5xl font-bold text-brand-700">
 							{result.score} / {result.total}
 						</div>
-						<p className="mt-2 text-ink-muted">
+						<p className="mt-2 text-muted-foreground">
 							{result.score}/{result.total} correct —{" "}
 							{scorePercent}%
 						</p>
@@ -112,7 +112,7 @@ function QuizTaker() {
 										<div className="text-sm font-medium">
 											{qi + 1}. {question.text}
 										</div>
-										<div className="mt-1 text-sm text-ink-muted">
+										<div className="mt-1 text-sm text-muted-foreground">
 											You answered:{" "}
 											{chosen >= 0
 												? question.options[chosen]?.text
@@ -140,7 +140,7 @@ function QuizTaker() {
 							</Link>
 							<Link
 								href="/my/results"
-								className="rounded-lg border border-edge px-4 py-2 text-sm font-medium hover:bg-canvas"
+								className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted/50"
 							>
 								View all results
 							</Link>
@@ -160,7 +160,7 @@ function QuizTaker() {
 				← Back to course
 			</Link>
 			<h1 className="mt-3 text-page-title">{quiz.title}</h1>
-			<p className="mt-1 text-ink-muted">
+			<p className="mt-1 text-muted-foreground">
 				{quiz.questions.length} questions · answer all and submit for an
 				instant score.
 			</p>
@@ -188,7 +188,7 @@ function QuizTaker() {
 											className={`flex w-full items-center gap-3 rounded-lg border px-3 py-2.5 text-left text-sm transition-colors ${
 												selected
 													? "border-brand-500 bg-brand-50 font-medium"
-													: "border-edge hover:bg-canvas"
+													: "border-border hover:bg-muted/50"
 											}`}
 										>
 											<span
@@ -213,7 +213,7 @@ function QuizTaker() {
 			</div>
 
 			<div className="mt-6 flex items-center justify-between">
-				<div className="text-sm text-ink-muted">
+				<div className="text-sm text-muted-foreground">
 					{answeredCount} of {quiz.questions.length} answered
 					<span className="ml-3 inline-block w-24 align-middle">
 						<ProgressBar value={percent} />

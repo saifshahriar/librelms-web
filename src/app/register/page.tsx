@@ -44,9 +44,9 @@ export default function RegisterPage() {
 
 	return (
 		<div className="container-page flex min-h-[70vh] items-center justify-center">
-			<div className="card-surface w-full max-w-md p-6">
+			<div className="border border-border rounded-xl bg-card w-full max-w-md p-6">
 				<h1 className="text-page-title mb-1">Create account</h1>
-				<p className="mb-6 text-sm text-ink-muted">
+				<p className="mb-6 text-sm text-muted-foreground">
 					New accounts start as Student — enroll in courses, learn and
 					take quizzes.
 				</p>
@@ -103,7 +103,7 @@ export default function RegisterPage() {
 						Sign up
 					</Button>
 				</form>
-				<p className="mt-4 text-center text-sm text-ink-muted">
+				<p className="mt-4 text-center text-sm text-muted-foreground">
 					Already have an account?{" "}
 					<Link
 						href="/login"

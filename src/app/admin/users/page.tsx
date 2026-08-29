@@ -67,7 +67,7 @@ function UserManagement() {
 	return (
 		<div className="container-page py-10">
 			<h1 className="text-page-title mb-2">User management</h1>
-			<p className="mb-8 text-ink-muted">
+			<p className="mb-8 text-muted-foreground">
 				View all users and change their roles.
 			</p>
 
@@ -78,7 +78,7 @@ function UserManagement() {
 			)}
 
 			{loading ? (
-				<div className="card-surface h-64 animate-pulse" />
+				<div className="border border-border rounded-xl bg-card h-64 animate-pulse" />
 			) : (
 				<Table>
 					<THead>
@@ -96,8 +96,12 @@ function UserManagement() {
 								<TD className="font-medium">
 									{u.fullName ?? u.username}
 								</TD>
-								<TD className="text-ink-muted">{u.username}</TD>
-								<TD className="text-ink-muted">{u.email}</TD>
+								<TD className="text-muted-foreground">
+									{u.username}
+								</TD>
+								<TD className="text-muted-foreground">
+									{u.email}
+								</TD>
 								<TD>
 									<Badge variant={roleTone(u.role)}>
 										{ROLE_LABELS[u.role]}

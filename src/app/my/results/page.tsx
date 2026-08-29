@@ -21,7 +21,7 @@ function ResultsHistory() {
 	return (
 		<div className="container-page py-10">
 			<h1 className="text-page-title mb-2">My Quiz Results</h1>
-			<p className="mb-8 text-ink-muted">
+			<p className="mb-8 text-muted-foreground">
 				Your quiz scores are stored and viewable any time.
 			</p>
 
@@ -30,13 +30,13 @@ function ResultsHistory() {
 					{[0, 1].map((i) => (
 						<div
 							key={i}
-							className="card-surface h-20 animate-pulse"
+							className="border border-border rounded-xl bg-card h-20 animate-pulse"
 						/>
 					))}
 				</div>
 			) : results.length === 0 ? (
-				<div className="card-surface px-6 py-16 text-center">
-					<p className="text-ink-muted">
+				<div className="border border-border rounded-xl bg-card px-6 py-16 text-center">
+					<p className="text-muted-foreground">
 						You haven&apos;t taken any quiz yet.
 					</p>
 					<Link
@@ -57,7 +57,7 @@ function ResultsHistory() {
 										<div className="font-semibold">
 											{r.quizTitle}
 										</div>
-										<div className="mt-0.5 text-sm text-ink-muted">
+										<div className="mt-0.5 text-sm text-muted-foreground">
 											{r.courseTitle} ·{" "}
 											{new Date(
 												r.submittedAt,
@@ -80,7 +80,7 @@ function ResultsHistory() {
 											<div className="text-lg font-bold">
 												{r.score}
 											</div>
-											<div className="text-xs text-ink-faint">
+											<div className="text-xs text-muted-foreground/70">
 												of {r.total}
 											</div>
 										</div>

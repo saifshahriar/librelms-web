@@ -24,7 +24,7 @@ export default function BlogPostPage() {
 	if (loading) {
 		return (
 			<div className="container-page py-10">
-				<div className="card-surface h-96 animate-pulse" />
+				<div className="border border-border rounded-xl bg-card h-96 animate-pulse" />
 			</div>
 		);
 	}
@@ -33,7 +33,7 @@ export default function BlogPostPage() {
 		return (
 			<div className="container-page py-20 text-center">
 				<h1 className="text-page-title">Post not found</h1>
-				<p className="mt-2 text-ink-muted">
+				<p className="mt-2 text-muted-foreground">
 					It may be a draft or it was removed.{" "}
 					<Link
 						href="/blog"
@@ -54,7 +54,7 @@ export default function BlogPostPage() {
 			>
 				← Back to blog
 			</Link>
-			<div className="mt-4 flex items-center gap-2 text-sm text-ink-faint">
+			<div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground/70">
 				<span>{post.authorName}</span>
 				<span>·</span>
 				<span>
@@ -72,10 +72,10 @@ export default function BlogPostPage() {
 				<img
 					src={post.coverImageUrl}
 					alt={post.title}
-					className="mt-6 w-full rounded-xl border border-edge object-cover"
+					className="mt-6 w-full rounded-xl border border-border object-cover"
 				/>
 			)}
-			<div className="prose prose-slate mt-8 whitespace-pre-line text-ink">
+			<div className="prose prose-slate mt-8 whitespace-pre-line text-foreground">
 				{post.body}
 			</div>
 		</article>

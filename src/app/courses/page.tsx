@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { Badge, Card, CardBody } from "@/components/ui";
+import { Badge, Card, CardBody, Input } from "@/components/ui";
 import { courseService } from "@/lib/api";
 import type { Course } from "@/lib/types";
 
@@ -33,16 +33,16 @@ export default function CoursesPage() {
 			<div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
 				<div>
 					<h1 className="text-page-title">Courses</h1>
-					<p className="mt-1 text-ink-muted">
+					<p className="mt-1 text-muted-foreground">
 						Browse the library and enroll to start learning.
 					</p>
 				</div>
-				<input
+				<Input
 					type="search"
 					placeholder="Search courses…"
 					value={query}
 					onChange={(e) => setQuery(e.target.value)}
-					className="input-base sm:max-w-xs"
+					className="sm:max-w-xs"
 				/>
 			</div>
 
@@ -51,12 +51,12 @@ export default function CoursesPage() {
 					{[0, 1, 2, 3, 4, 5].map((i) => (
 						<div
 							key={i}
-							className="card-surface h-44 animate-pulse"
+							className="border border-border rounded-xl bg-card h-44 animate-pulse"
 						/>
 					))}
 				</div>
 			) : filtered.length === 0 ? (
-				<div className="card-surface px-6 py-16 text-center text-ink-muted">
+				<div className="border border-border rounded-xl bg-card px-6 py-16 text-center text-muted-foreground">
 					No courses match your search.
 				</div>
 			) : (
@@ -78,7 +78,7 @@ export default function CoursesPage() {
 									<h3 className="text-lg font-semibold">
 										{course.title}
 									</h3>
-									<p className="mt-1 line-clamp-3 text-sm text-ink-muted">
+									<p className="mt-1 line-clamp-3 text-sm text-muted-foreground">
 										{course.description}
 									</p>
 									<p className="mt-4 text-sm font-medium text-brand-600">

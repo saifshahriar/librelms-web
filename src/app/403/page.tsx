@@ -5,7 +5,7 @@ export default function ForbiddenPage() {
 		<div className="container-page flex min-h-[60vh] flex-col items-center justify-center gap-4 text-center">
 			<div className="text-6xl">🔒</div>
 			<h1 className="text-page-title">403 — Access denied</h1>
-			<p className="max-w-md text-ink-muted">
+			<p className="max-w-md text-muted-foreground">
 				You don&apos;t have permission to view this page. If you think
 				you should, try logging in with a different account.
 			</p>
@@ -18,7 +18,7 @@ export default function ForbiddenPage() {
 				</Link>
 				<Link
 					href="/login"
-					className="rounded-lg border border-edge px-4 py-2 text-sm font-medium hover:bg-canvas"
+					className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted/50"
 				>
 					Log in
 				</Link>

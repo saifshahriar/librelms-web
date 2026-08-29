@@ -178,7 +178,7 @@ function BlogManage() {
 			<div className="mb-8 flex items-end justify-between">
 				<div>
 					<h1 className="text-page-title">Blog posts</h1>
-					<p className="mt-1 text-ink-muted">
+					<p className="mt-1 text-muted-foreground">
 						Drafts are hidden from the public; publish to make them
 						visible.
 					</p>
@@ -194,16 +194,16 @@ function BlogManage() {
 			</div>
 
 			{loading ? (
-				<div className="card-surface h-40 animate-pulse" />
+				<div className="border border-border rounded-xl bg-card h-40 animate-pulse" />
 			) : posts.length === 0 ? (
-				<Card className="py-16 text-center text-ink-muted">
+				<Card className="py-16 text-center text-muted-foreground">
 					No posts yet.
 				</Card>
 			) : (
 				<Card>
 					<CardBody className="p-0">
 						<table className="w-full text-sm">
-							<thead className="border-b border-edge bg-canvas text-left text-xs uppercase tracking-wide text-ink-muted">
+							<thead className="border-b border-border bg-muted/50 text-left text-xs uppercase tracking-wide text-muted-foreground">
 								<tr>
 									<th className="px-4 py-3">Title</th>
 									<th className="px-4 py-3">Status</th>
@@ -215,7 +215,7 @@ function BlogManage() {
 								{posts.map((post) => (
 									<tr
 										key={post.id}
-										className="hover:bg-canvas/60"
+										className="hover:bg-muted/50/60"
 									>
 										<td className="px-4 py-3">
 											<Link
@@ -236,7 +236,7 @@ function BlogManage() {
 												</Badge>
 											)}
 										</td>
-										<td className="px-4 py-3 text-ink-muted">
+										<td className="px-4 py-3 text-muted-foreground">
 											{post.authorName}
 										</td>
 										<td className="px-4 py-3 text-right">
