@@ -5,9 +5,6 @@
  */
 import { mockRequest } from "../src/lib/api/mock/handler";
 
-const DB_KEY = "librelms.mockdb.v1";
-const AUTH_KEY = "librelms.auth.v1";
-
 function authHeader(jwt: string): Record<string, string> {
 	return { Authorization: `Bearer ${jwt}` };
 }
