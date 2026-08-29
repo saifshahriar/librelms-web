@@ -234,11 +234,16 @@ export async function mockRequest<T>(
 		let lessons = d.lessons;
 		if (!Number.isNaN(courseId)) {
 			lessons = lessons.filter((l) => l.courseId === courseId);
-		}
-		// students must be enrolled to see lesson content
-		if (user.role === "student" && !Number.isNaN(courseId)) {
-			if (!isEnrolled(user.id, courseId))
+			// students must be enrolled; instructors must own the course
+			if (user.role === "student" && !isEnrolled(user.id, courseId)) {
 				throw new ApiError(403, "Not enrolled");
+			}
+			if (user.role === "instructor" && !isCourseOwner(user, courseId)) {
+				throw new ApiError(
+					403,
+					"You don't have permission to view this course",
+				);
+			}
 		}
 		return { data: lessons.map(toLesson) } as T;
 	}

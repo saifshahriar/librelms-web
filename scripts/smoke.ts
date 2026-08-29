@@ -186,6 +186,37 @@ async function main() {
 	}
 	check("duplicate enrollment rejected", dup);
 
+	// 13. instructor sees lessons of own course but is 403 on others
+	const instructor = (await mockRequest("/api/auth/local", {
+		method: "POST",
+		body: JSON.stringify({
+			identifier: "instructor@librelms.dev",
+			password: "instructor123",
+		}),
+	})) as { jwt: string };
+	const ownLessons = (await mockRequest("/api/lessons?courseId=1", {
+		headers: authHeader(instructor.jwt),
+	})) as { data: unknown[] };
+	check("instructor sees own course lessons", ownLessons.data.length === 4);
+
+	let instructorDenied = false;
+	let denialMessage = "";
+	try {
+		await mockRequest("/api/lessons?courseId=3", {
+			headers: authHeader(instructor.jwt),
+		});
+	} catch (e) {
+		instructorDenied = (e as { status: number }).status === 403;
+		denialMessage = (e as Error).message;
+	}
+	check(
+		"instructor denied lessons on non-owned course",
+		instructorDenied &&
+			denialMessage.includes(
+				"You don't have permission to view this course",
+			),
+	);
+
 	console.log(`\n${pass} passed, ${fail} failed`);
 	if (fail > 0) process.exitCode = 1;
 }
