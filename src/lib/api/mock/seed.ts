@@ -332,6 +332,7 @@ export function seedDb(): MockDb {
 				total: 3,
 				submittedAt: daysAgo(7),
 				answers: [0, 0, 2],
+				correctAnswers: [0, 0, 0],
 			},
 		],
 		posts: [

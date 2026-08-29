@@ -17,15 +17,19 @@ import {
 } from "./db";
 
 function findUserByToken(init?: RequestInit): DbUser | null {
-	const auth = init?.headers?.["Authorization" as never] ?? init?.headers;
-	const raw =
-		typeof auth === "string"
-			? auth
-			: auth &&
-					typeof auth === "object" &&
-					"Authorization" in (auth as Record<string, unknown>)
-				? String((auth as Record<string, unknown>).Authorization)
-				: "";
+	const headers = init?.headers;
+	if (!headers) return null;
+	let raw: string | undefined;
+	if (typeof headers === "string") {
+		raw = headers;
+	} else if (Array.isArray(headers)) {
+		raw = headers.find(([k]) => k.toLowerCase() === "authorization")?.[1];
+	} else {
+		for (const [k, v] of Object.entries(headers)) {
+			if (k.toLowerCase() === "authorization") raw = v as string;
+		}
+	}
+	if (!raw) return null;
 	const token = raw.replace(/^Bearer\s+/, "").trim();
 	if (!token.startsWith("mock-jwt-")) return null;
 	const id = Number.parseInt(token.replace("mock-jwt-", ""), 10);
@@ -451,8 +455,10 @@ export async function mockRequest<T>(
 
 		// grade server-side: count answers matching a correct option
 		let score = 0;
+		const correctAnswers: number[] = [];
 		for (const [i, question] of quiz.questions.entries()) {
 			const correct = question.options.findIndex((o) => o.isCorrect);
+			correctAnswers.push(correct);
 			if (answers[i] === correct) score++;
 		}
 		const result = {
@@ -463,6 +469,7 @@ export async function mockRequest<T>(
 			total: quiz.questions.length,
 			submittedAt: new Date().toISOString(),
 			answers,
+			correctAnswers,
 		};
 		d.quizResults.push(result);
 		persist();
@@ -515,7 +522,19 @@ export async function mockRequest<T>(
 				data: d.completions.filter((c) => c.userId === user.id),
 			} as T;
 		}
-		return { data: d.completions } as T;
+		if (user.role === "admin" || user.role === "content_manager") {
+			return { data: d.completions } as T;
+		}
+		// instructors: completions for their own courses
+		const ownCourseIds = d.courses
+			.filter((c) => c.instructorIds.includes(user.id))
+			.map((c) => c.id);
+		return {
+			data: d.completions.filter((c) => {
+				const lesson = d.lessons.find((l) => l.id === c.lessonId);
+				return lesson ? ownCourseIds.includes(lesson.courseId) : false;
+			}),
+		} as T;
 	}
 
 	if (p === "/api/lesson-completions" && method === "POST") {

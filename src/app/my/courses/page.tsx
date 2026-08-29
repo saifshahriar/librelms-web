@@ -75,12 +75,18 @@ function MyCourses() {
 									<ProgressBar value={progress.percent} />
 								</div>
 								<div className="mt-4 flex gap-2">
-									<Link
-										href={`/courses/${course.id}/learn/${firstLessonId(course)}`}
-										className="flex-1 rounded-lg bg-brand-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-brand-700"
-									>
-										Continue learning
-									</Link>
+									{course.lessonIds.length > 0 ? (
+										<Link
+											href={`/courses/${course.id}/learn/${firstIncompleteId(course, progress.completedLessons)}`}
+											className="flex-1 rounded-lg bg-brand-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-brand-700"
+										>
+											Continue learning
+										</Link>
+									) : (
+										<span className="flex-1 rounded-lg bg-slate-100 px-4 py-2 text-center text-sm font-medium text-ink-faint">
+											No lessons yet
+										</span>
+									)}
 									<Link
 										href={`/courses/${course.id}`}
 										className="rounded-lg border border-edge px-4 py-2 text-sm font-medium hover:bg-canvas"
@@ -97,9 +103,10 @@ function MyCourses() {
 	);
 }
 
-function firstLessonId(course: Course): number {
-	if (course.lessonIds.length > 0) return course.lessonIds[0];
-	return 0;
+function firstIncompleteId(course: Course, completedCount: number): number {
+	if (completedCount < course.lessonIds.length)
+		return course.lessonIds[completedCount];
+	return course.lessonIds[0];
 }
 
 export default function MyCoursesPage() {

@@ -73,6 +73,8 @@ export interface QuizResult {
 	total: number;
 	submittedAt: string;
 	answers: number[];
+	/** index of the correct option per question (used for post-submit review) */
+	correctAnswers: number[];
 }
 
 export interface Enrollment {

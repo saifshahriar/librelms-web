@@ -97,40 +97,39 @@ function QuizTaker() {
 							<ProgressBar value={scorePercent} />
 						</div>
 						<div className="mt-8 space-y-3 text-left">
-							{quiz.questions.map((question, qi) => (
-								<div
-									key={question.id}
-									className={`rounded-lg border p-3 ${
-										answers[qi] === -1
-											? "border-edge"
-											: result.answers[qi] === answers[qi]
+							{quiz.questions.map((question, qi) => {
+								const chosen = answers[qi];
+								const correct = result.correctAnswers[qi];
+								return (
+									<div
+										key={question.id}
+										className={`rounded-lg border p-3 ${
+											chosen === correct
 												? "border-emerald-200 bg-emerald-50"
 												: "border-red-200 bg-red-50"
-									}`}
-								>
-									<div className="text-sm font-medium">
-										{qi + 1}. {question.text}
-									</div>
-									<div className="mt-1 text-sm text-ink-muted">
-										You answered:{" "}
-										{answers[qi] >= 0
-											? question.options[answers[qi]]
-													?.text
-											: "—"}
-									</div>
-									{answers[qi] >= 0 &&
-										result.answers[qi] !== answers[qi] && (
+										}`}
+									>
+										<div className="text-sm font-medium">
+											{qi + 1}. {question.text}
+										</div>
+										<div className="mt-1 text-sm text-ink-muted">
+											You answered:{" "}
+											{chosen >= 0
+												? question.options[chosen]?.text
+												: "—"}
+										</div>
+										{chosen !== correct && (
 											<div className="mt-0.5 text-sm text-emerald-700">
 												Correct:{" "}
 												{
-													question.options[
-														result.answers[qi]
-													]?.text
+													question.options[correct]
+														?.text
 												}
 											</div>
 										)}
-								</div>
-							))}
+									</div>
+								);
+							})}
 						</div>
 						<div className="mt-8 flex justify-center gap-3">
 							<Link

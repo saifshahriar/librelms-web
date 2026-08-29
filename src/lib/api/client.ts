@@ -33,7 +33,14 @@ export async function apiFetch<T>(
 ): Promise<T> {
 	if (MOCK_ENABLED) {
 		const { mockRequest } = await import("./mock/handler");
-		return mockRequest<T>(path, init);
+		return mockRequest<T>(path, {
+			...init,
+			headers: {
+				"Content-Type": "application/json",
+				...(token ? { Authorization: `Bearer ${token}` } : {}),
+				...init?.headers,
+			},
+		});
 	}
 
 	const base = process.env.NEXT_PUBLIC_API_URL ?? "";

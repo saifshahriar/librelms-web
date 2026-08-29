@@ -5,7 +5,12 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { RequireRole } from "@/components/auth/require-role";
 import { Badge, Button, Card, CardBody, ProgressBar } from "@/components/ui";
-import { completionService, courseService, lessonService } from "@/lib/api";
+import {
+	completionService,
+	courseService,
+	type LessonCompletion,
+	lessonService,
+} from "@/lib/api";
 import type { Course, CourseProgress, Lesson } from "@/lib/types";
 
 function LessonViewer() {
@@ -17,6 +22,7 @@ function LessonViewer() {
 	const [course, setCourse] = useState<Course | null>(null);
 	const [lessons, setLessons] = useState<Lesson[]>([]);
 	const [progress, setProgress] = useState<CourseProgress | null>(null);
+	const [completions, setCompletions] = useState<LessonCompletion[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [marking, setMarking] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -24,14 +30,16 @@ function LessonViewer() {
 	useEffect(() => {
 		async function load() {
 			try {
-				const [c, l, p] = await Promise.all([
+				const [c, l, p, done] = await Promise.all([
 					courseService.get(courseId),
 					lessonService.list(courseId),
 					courseService.myProgress(courseId),
+					completionService.mine(),
 				]);
 				setCourse(c.data);
 				setLessons(l.data);
 				setProgress(p.data);
+				setCompletions(done.data);
 			} catch {
 				setError("Could not load this lesson. Are you enrolled?");
 			} finally {
@@ -47,21 +55,15 @@ function LessonViewer() {
 	const prev = ordered[currentIndex - 1];
 	const next = ordered[currentIndex + 1];
 
-	const completedThis =
-		progress !== null &&
-		lessons.length > 0 &&
-		currentIndex >= 0 &&
-		((progress.completedLessons > 0 &&
-			ordered
-				.slice(0, progress.completedLessons)
-				.some((l) => l.id === lessonId)) ||
-			false);
+	const completedLessonIds = new Set(completions.map((c) => c.lessonId));
+	const completedThis = completedLessonIds.has(lessonId);
 
 	async function markComplete() {
 		setMarking(true);
 		setError(null);
 		try {
-			await completionService.complete(lessonId);
+			const done = await completionService.complete(lessonId);
+			setCompletions((prev) => [...prev, done.data]);
 			const p = await courseService.myProgress(courseId);
 			setProgress(p.data);
 			if (next) router.push(`/courses/${courseId}/learn/${next.id}`);
@@ -189,10 +191,8 @@ function LessonViewer() {
 							</>
 						)}
 						<ol className="mt-4 space-y-1">
-							{ordered.map((l, i) => {
-								const done =
-									progress !== null &&
-									i < progress.completedLessons;
+							{ordered.map((l) => {
+								const done = completedLessonIds.has(l.id);
 								const current = l.id === lessonId;
 								return (
 									<li key={l.id}>

@@ -74,6 +74,7 @@ export interface DbQuizResult {
 	total: number;
 	submittedAt: string;
 	answers: number[];
+	correctAnswers: number[];
 }
 
 export interface DbPost {
@@ -225,6 +226,7 @@ export function toQuizResult(
 		total: r.total,
 		submittedAt: r.submittedAt,
 		answers: r.answers,
+		correctAnswers: r.correctAnswers,
 	};
 }
 

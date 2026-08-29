@@ -8,7 +8,9 @@ export function loadStoredAuth(): AuthUser | null {
 	try {
 		const raw = window.localStorage.getItem(STORAGE_KEY);
 		if (!raw) return null;
-		return JSON.parse(raw) as AuthUser;
+		const user = JSON.parse(raw) as AuthUser;
+		setAuthToken(user.jwt);
+		return user;
 	} catch {
 		return null;
 	}
