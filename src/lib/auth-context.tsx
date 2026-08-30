@@ -38,8 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	}, []);
 
 	const login = useCallback(async (identifier: string, password: string) => {
-		const res = await authService.login(identifier, password);
-		const authUser: AuthUser = { ...res.user, jwt: res.jwt };
+		const authUser = await authService.login(identifier, password);
 		storeAuth(authUser);
 		setUser(authUser);
 		return authUser;
@@ -52,8 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 			password: string;
 			fullName?: string;
 		}) => {
-			const res = await authService.register(input);
-			const authUser: AuthUser = { ...res.user, jwt: res.jwt };
+			const authUser = await authService.register(input);
 			storeAuth(authUser);
 			setUser(authUser);
 			return authUser;
