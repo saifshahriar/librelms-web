@@ -1,4 +1,4 @@
-import type { AuthUser, User } from "@/lib/types";
+import type { AuthUser } from "@/lib/types";
 import { apiFetch } from "./client";
 
 interface AuthResponse {
@@ -15,29 +15,24 @@ interface AuthResponse {
 		  };
 }
 
-/** Normalize a users-permissions payload into the app user shape. */
-function toAppUser(res: AuthResponse): AuthUser {
-	const u = res.user as Extract<AuthResponse["user"], { username: string }>;
-	return {
-		id: typeof u.id === "string" ? Number.parseInt(u.id, 10) : (u.id ?? 0),
-		username: u.username,
-		email: u.email,
-		role: ((typeof u.role === "string"
-			? u.role
-			: (u.role as { type?: string } | undefined)?.type) ??
-			"student") as AuthUser["role"],
-		fullName: u.fullName ?? undefined,
-		jwt: res.jwt,
-	};
-}
-
 export const authService = {
 	async login(identifier: string, password: string) {
 		const res = await apiFetch<AuthResponse>("/api/auth/local", {
 			method: "POST",
 			body: JSON.stringify({ identifier, password }),
 		});
-		return toAppUser(res);
+		// users-permissions login response omits the role; fetch the
+		// authoritative profile (role slug) with the fresh token
+		const me = await apiFetch<{ data: Omit<AuthUser, "jwt"> }>(
+			"/api/users/me",
+			{
+				headers: { Authorization: `Bearer ${res.jwt}` } as Record<
+					string,
+					string
+				>,
+			},
+		);
+		return { ...me.data, jwt: res.jwt };
 	},
 
 	async register(input: {
@@ -50,11 +45,20 @@ export const authService = {
 			method: "POST",
 			body: JSON.stringify(input),
 		});
-		return toAppUser(res);
+		const me = await apiFetch<{ data: Omit<AuthUser, "jwt"> }>(
+			"/api/users/me",
+			{
+				headers: { Authorization: `Bearer ${res.jwt}` } as Record<
+					string,
+					string
+				>,
+			},
+		);
+		return { ...me.data, jwt: res.jwt };
 	},
 
 	/** Current user with role (contract shape). */
 	me() {
-		return apiFetch<{ data: User }>("/api/users/me");
+		return apiFetch<{ data: Omit<AuthUser, "jwt"> }>("/api/users/me");
 	},
 };

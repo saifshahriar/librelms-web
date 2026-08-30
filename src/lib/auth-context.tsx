@@ -33,8 +33,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 	useEffect(() => {
 		const stored = loadStoredAuth();
+		if (!stored) {
+			setLoading(false);
+			return;
+		}
 		setUser(stored);
-		setLoading(false);
+
+		// Revalidate against the backend: refreshes the profile (role can
+		// change since login, e.g. admin promotion) and drops dead sessions
+		// (expired JWT, revoked account, stale token from another backend).
+		refreshProfile(stored)
+			.then((fresh) => {
+				if (fresh) {
+					storeAuth(fresh);
+					setUser(fresh);
+				}
+			})
+			.finally(() => setLoading(false));
+
+		async function refreshProfile(current: AuthUser) {
+			try {
+				const res = await authService.me();
+				return { ...res.data, jwt: current.jwt };
+			} catch {
+				// token rejected: end the session
+				storeAuth(null);
+				setUser(null);
+				return null;
+			}
+		}
 	}, []);
 
 	const login = useCallback(async (identifier: string, password: string) => {
