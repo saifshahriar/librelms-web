@@ -44,10 +44,12 @@ export async function apiFetch<T>(
 	}
 
 	const base = process.env.NEXT_PUBLIC_API_URL ?? "";
+	const isForm =
+		typeof FormData !== "undefined" && init?.body instanceof FormData;
 	const res = await fetch(`${base}${path}`, {
 		...init,
 		headers: {
-			"Content-Type": "application/json",
+			...(isForm ? {} : { "Content-Type": "application/json" }),
 			...(token ? { Authorization: `Bearer ${token}` } : {}),
 			...init?.headers,
 		},

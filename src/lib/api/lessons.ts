@@ -11,6 +11,7 @@ export interface LessonInput {
 	kind: "text" | "video";
 	body?: string;
 	videoUrl?: string;
+	videoFileId?: number | null;
 }
 
 export const lessonService = {
@@ -38,6 +39,7 @@ export const lessonService = {
 			kind?: "text" | "video";
 			body?: string;
 			videoUrl?: string;
+			videoFileId?: number | null;
 		},
 	) {
 		return apiFetch<{ data: Lesson }>(`/api/lessons/${id}`, {

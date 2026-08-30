@@ -6,3 +6,4 @@ export { enrollmentService } from "./enrollments";
 export { lessonService } from "./lessons";
 export { postService } from "./posts";
 export { quizService } from "./quizzes";
+export { mediaUrl, uploadService } from "./upload";

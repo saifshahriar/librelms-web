@@ -18,6 +18,7 @@ export const courseService = {
 		title: string;
 		description: string;
 		coverImageUrl?: string;
+		coverImageId?: number | null;
 	}) {
 		return apiFetch<{ data: Course }>("/api/courses", {
 			method: "POST",
@@ -27,7 +28,12 @@ export const courseService = {
 
 	update(
 		id: number,
-		input: { title?: string; description?: string; coverImageUrl?: string },
+		input: {
+			title?: string;
+			description?: string;
+			coverImageUrl?: string;
+			coverImageId?: number | null;
+		},
 	) {
 		return apiFetch<{ data: Course }>(`/api/courses/${id}`, {
 			method: "PUT",

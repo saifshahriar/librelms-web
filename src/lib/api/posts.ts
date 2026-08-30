@@ -19,6 +19,7 @@ export const postService = {
 		title: string;
 		body: string;
 		coverImageUrl?: string;
+		coverImageId?: number | null;
 		published?: boolean;
 	}) {
 		return apiFetch<{ data: Post }>("/api/posts", {
@@ -33,6 +34,7 @@ export const postService = {
 			title?: string;
 			body?: string;
 			coverImageUrl?: string;
+			coverImageId?: number | null;
 			published?: boolean;
 		},
 	) {
