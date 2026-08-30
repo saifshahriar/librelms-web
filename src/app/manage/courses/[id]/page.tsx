@@ -21,6 +21,7 @@ import {
 	SelectValue,
 	Textarea,
 } from "@/components/ui";
+import { VideoUpload } from "@/components/upload/video-upload";
 import { courseService, lessonService, quizService } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 import { faArrowLeft, faXmark } from "@/lib/icons";
@@ -45,7 +46,10 @@ function LessonModal({
 	const [title, setTitle] = useState("");
 	const [kind, setKind] = useState<"text" | "video">("text");
 	const [body, setBody] = useState("");
-	const [videoUrl, setVideoUrl] = useState("");
+	const [videoFile, setVideoFile] = useState<{
+		url: string;
+		id: number | null;
+	} | null>(null);
 	const [saving, setSaving] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
@@ -54,8 +58,10 @@ function LessonModal({
 		setTitle(lesson?.title ?? "");
 		setKind(lesson?.content.kind ?? "text");
 		setBody(lesson?.content.kind === "text" ? lesson.content.body : "");
-		setVideoUrl(
-			lesson?.content.kind === "video" ? lesson.content.videoUrl : "",
+		setVideoFile(
+			lesson?.content.kind === "video" && lesson.content.videoUrl
+				? { url: lesson.content.videoUrl, id: null }
+				: null,
 		);
 		setError(null);
 	}, [open, lesson]);
@@ -64,12 +70,19 @@ function LessonModal({
 		setSaving(true);
 		setError(null);
 		try {
+			const videoInput =
+				kind === "video" && videoFile
+					? {
+							videoFileId: videoFile.id,
+							videoUrl: videoFile.id ? undefined : videoFile.url,
+						}
+					: undefined;
 			if (lesson) {
 				const res = await lessonService.update(lesson.id, {
 					title,
 					kind,
 					body: kind === "text" ? body : undefined,
-					videoUrl: kind === "video" ? videoUrl : undefined,
+					...videoInput,
 				});
 				onSaved(res.data, false);
 			} else {
@@ -78,7 +91,7 @@ function LessonModal({
 					title,
 					kind,
 					body: kind === "text" ? body : undefined,
-					videoUrl: kind === "video" ? videoUrl : undefined,
+					...videoInput,
 				});
 				onSaved(res.data, true);
 			}
@@ -149,15 +162,7 @@ function LessonModal({
 						/>
 					</div>
 				) : (
-					<div>
-						<Label htmlFor="lesson-video">Video URL</Label>
-						<Input
-							id="lesson-video"
-							value={videoUrl}
-							onChange={(e) => setVideoUrl(e.target.value)}
-							placeholder="https://www.youtube.com/watch?v="
-						/>
-					</div>
+					<VideoUpload value={videoFile} onChange={setVideoFile} />
 				)}
 				{error && <p className="text-sm text-red-600">{error}</p>}
 			</div>

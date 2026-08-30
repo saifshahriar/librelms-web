@@ -15,6 +15,7 @@ import {
 	Label,
 	Modal,
 } from "@/components/ui";
+import { ImageUpload } from "@/components/upload/image-upload";
 import { courseService } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 import { faArrowRight } from "@/lib/icons";
@@ -32,6 +33,10 @@ function CreateCourseModal({
 }) {
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
+	const [cover, setCover] = useState<{
+		url: string;
+		id: number | null;
+	} | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [saving, setSaving] = useState(false);
 
@@ -39,10 +44,15 @@ function CreateCourseModal({
 		setSaving(true);
 		setError(null);
 		try {
-			const res = await courseService.create({ title, description });
+			const res = await courseService.create({
+				title,
+				description,
+				coverImageId: cover?.id ?? undefined,
+			});
 			onCreated(res.data);
 			setTitle("");
 			setDescription("");
+			setCover(null);
 			onClose();
 		} catch (err) {
 			setError(
@@ -92,6 +102,7 @@ function CreateCourseModal({
 						placeholder="What will students learn?"
 					/>
 				</div>
+				<ImageUpload value={cover} onChange={setCover} />
 				{error && <p className="text-sm text-red-600">{error}</p>}
 			</div>
 		</Modal>

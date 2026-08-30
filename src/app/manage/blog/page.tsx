@@ -14,6 +14,7 @@ import {
 	Modal,
 	Textarea,
 } from "@/components/ui";
+import { ImageUpload } from "@/components/upload/image-upload";
 import { postService } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 import type { Post } from "@/lib/types";
@@ -31,7 +32,10 @@ function PostEditor({
 }) {
 	const [title, setTitle] = useState("");
 	const [body, setBody] = useState("");
-	const [coverImageUrl, setCoverImageUrl] = useState("");
+	const [cover, setCover] = useState<{
+		url: string;
+		id: number | null;
+	} | null>(null);
 	const [saving, setSaving] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
@@ -39,7 +43,9 @@ function PostEditor({
 		if (!open) return;
 		setTitle(post?.title ?? "");
 		setBody(post?.body ?? "");
-		setCoverImageUrl(post?.coverImageUrl ?? "");
+		setCover(
+			post?.coverImageUrl ? { url: post.coverImageUrl, id: null } : null,
+		);
 		setError(null);
 	}, [open, post]);
 
@@ -47,11 +53,14 @@ function PostEditor({
 		setSaving(true);
 		setError(null);
 		try {
+			const coverInput = cover?.id
+				? { coverImageId: cover.id }
+				: { coverImageUrl: cover?.url ?? "" };
 			if (post) {
 				const res = await postService.update(post.documentId, {
 					title,
 					body,
-					coverImageUrl,
+					...coverInput,
 					published,
 				});
 				onSaved(res.data, false);
@@ -59,7 +68,7 @@ function PostEditor({
 				const res = await postService.create({
 					title,
 					body,
-					coverImageUrl,
+					...coverInput,
 					published,
 				});
 				onSaved(res.data, true);
@@ -122,17 +131,11 @@ function PostEditor({
 						placeholder="Write your post"
 					/>
 				</div>
-				<div>
-					<Label htmlFor="post-cover">
-						Cover image URL (optional)
-					</Label>
-					<Input
-						id="post-cover"
-						value={coverImageUrl}
-						onChange={(e) => setCoverImageUrl(e.target.value)}
-						placeholder="https://"
-					/>
-				</div>
+				<ImageUpload
+					value={cover}
+					onChange={setCover}
+					label="Cover image"
+				/>
 				{error && <p className="text-sm text-red-600">{error}</p>}
 			</div>
 		</Modal>
