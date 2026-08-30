@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Markdown } from "@/components/markdown";
 import { Badge } from "@/components/ui";
 import { postService } from "@/lib/api";
+import { mediaUrl } from "@/lib/api/upload";
 import { faArrowLeft } from "@/lib/icons";
 import type { Post } from "@/lib/types";
 
@@ -74,7 +75,7 @@ export default function BlogPostPage() {
 			{post.coverImageUrl && (
 				// eslint-disable-next-line @next/next/no-img-element -- arbitrary external URLs, no domain allowlist config yet
 				<img
-					src={post.coverImageUrl}
+					src={mediaUrl(post.coverImageUrl)}
 					alt={post.title}
 					className="mt-6 w-full rounded-xl border border-border object-cover"
 				/>

@@ -13,6 +13,7 @@ import {
 	type LessonCompletion,
 	lessonService,
 } from "@/lib/api";
+import { mediaUrl } from "@/lib/api/upload";
 import { faArrowLeft, faArrowRight, faCheck } from "@/lib/icons";
 import type { Course, CourseProgress, Lesson } from "@/lib/types";
 
@@ -130,15 +131,28 @@ function LessonViewer() {
 				<Card className="mt-6">
 					<CardBody>
 						{lesson.content.kind === "video" ? (
-							<div className="aspect-video overflow-hidden rounded-lg bg-slate-900">
-								<iframe
-									src={embedUrl(lesson.content.videoUrl)}
-									title={lesson.title}
-									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-									allowFullScreen
-									className="h-full w-full"
-								/>
-							</div>
+							isYouTube(lesson.content.videoUrl) ? (
+								<div className="aspect-video overflow-hidden rounded-lg bg-slate-900">
+									<iframe
+										src={embedUrl(lesson.content.videoUrl)}
+										title={lesson.title}
+										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+										allowFullScreen
+										className="h-full w-full"
+									/>
+								</div>
+							) : (
+								<video
+									src={mediaUrl(lesson.content.videoUrl)}
+									controls
+									preload="metadata"
+									className="aspect-video w-full rounded-lg bg-slate-900"
+								>
+									<track kind="captions" />
+									Your browser does not support video
+									playback.
+								</video>
+							)
 						) : (
 							<Markdown text={lesson.content.body} />
 						)}
@@ -257,6 +271,10 @@ function LessonViewer() {
 			</aside>
 		</div>
 	);
+}
+
+function isYouTube(videoUrl: string): boolean {
+	return /(?:youtube\.com\/watch\?v=|youtu\.be\/)/.test(videoUrl);
 }
 
 function embedUrl(videoUrl: string): string {
