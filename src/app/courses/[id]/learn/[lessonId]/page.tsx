@@ -183,7 +183,7 @@ function LessonViewer() {
 									icon={faCheck}
 									className="size-3.5"
 								/>
-								Completed
+								Already Completed
 							</span>
 						) : (
 							"Mark as complete"
@@ -245,8 +245,8 @@ function LessonViewer() {
 											<span
 												className={`flex h-5 w-5 items-center justify-center rounded-full text-xs ${
 													done
-														? "bg-emerald-100 text-emerald-700"
-														: "bg-slate-100 text-muted-foreground/70"
+														? "bg-emerald-600 text-white"
+														: "bg-muted text-muted-foreground/70"
 												}`}
 											>
 												{done ? (
