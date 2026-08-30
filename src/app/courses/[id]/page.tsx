@@ -13,10 +13,15 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui";
-import { courseService, enrollmentService, lessonService } from "@/lib/api";
+import {
+	courseService,
+	enrollmentService,
+	lessonService,
+	quizService,
+} from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 import { faArrowLeft, faArrowRight } from "@/lib/icons";
-import type { Course, Lesson } from "@/lib/types";
+import type { Course, Lesson, Quiz } from "@/lib/types";
 
 export default function CourseDetailPage() {
 	const params = useParams<{ id: string }>();
@@ -26,6 +31,7 @@ export default function CourseDetailPage() {
 
 	const [course, setCourse] = useState<Course | null>(null);
 	const [lessons, setLessons] = useState<Lesson[]>([]);
+	const [quizzes, setQuizzes] = useState<Quiz[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [enrolling, setEnrolling] = useState(false);
 	const [enrolled, setEnrolled] = useState(false);
@@ -44,6 +50,8 @@ export default function CourseDetailPage() {
 						const l = await lessonService.list(courseId);
 						setLessons(l.data);
 						setEnrolled(true);
+						const q = await quizService.list(courseId);
+						setQuizzes(q.data);
 					} catch {
 						setEnrolled(false);
 					}
@@ -51,10 +59,22 @@ export default function CourseDetailPage() {
 					try {
 						const l = await lessonService.list(courseId);
 						setLessons(l.data);
+						const q = await quizService.list(courseId);
+						setQuizzes(q.data);
 					} catch {
 						setPermissionMessage(
 							"You don't have permission to view this course",
 						);
+					}
+				} else if (
+					user?.role === "admin" ||
+					user?.role === "content_manager"
+				) {
+					try {
+						const q = await quizService.list(courseId);
+						setQuizzes(q.data);
+					} catch {
+						// quizzes optional for staff view
 					}
 				}
 			} finally {
@@ -185,6 +205,51 @@ export default function CourseDetailPage() {
 							)}
 						</CardBody>
 					</Card>
+
+					{!permissionMessage && quizzes.length > 0 && (
+						<Card className="mt-6">
+							<CardHeader>
+								<CardTitle>Quizzes</CardTitle>
+							</CardHeader>
+							<CardBody className="p-0">
+								<ul className="divide-y divide-border">
+									{quizzes.map((quiz) => (
+										<li
+											key={quiz.id}
+											className="flex items-center gap-3 px-5 py-3.5"
+										>
+											<div className="min-w-0 flex-1">
+												<div className="truncate font-medium">
+													{quiz.title}
+												</div>
+												<div className="text-xs text-muted-foreground/70">
+													{quiz.questions.length}{" "}
+													questions
+												</div>
+											</div>
+											{user?.role === "student" &&
+												enrolled && (
+													<Link
+														href={`/courses/${courseId}/quiz/${quiz.id}`}
+														className="text-sm font-medium text-brand-600 hover:underline"
+													>
+														<span className="inline-flex items-center gap-1">
+															Take quiz
+															<FontAwesomeIcon
+																icon={
+																	faArrowRight
+																}
+																className="size-3"
+															/>
+														</span>
+													</Link>
+												)}
+										</li>
+									))}
+								</ul>
+							</CardBody>
+						</Card>
+					)}
 				</div>
 
 				<div>
