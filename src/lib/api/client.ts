@@ -13,9 +13,10 @@ export interface StrapiResponse<T> {
 	meta?: Record<string, unknown>;
 }
 
-const MOCK_ENABLED =
-	process.env.NEXT_PUBLIC_USE_MOCK !== "false" ||
-	!process.env.NEXT_PUBLIC_API_URL;
+// Mock API is opt-in: only an explicit NEXT_PUBLIC_USE_MOCK=true build
+// uses it. Production builds with just NEXT_PUBLIC_API_URL always hit
+// the real backend.
+const MOCK_ENABLED = process.env.NEXT_PUBLIC_USE_MOCK === "true";
 
 let token: string | null = null;
 

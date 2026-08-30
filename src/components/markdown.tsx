@@ -4,10 +4,14 @@ import ReactMarkdown from "react-markdown";
  * Renders trusted first-party content (lesson bodies, blog posts) as
  * markdown. No HTML is passed through, so it is safe for staff-authored
  * course content. Links open in a new tab.
+ *
+ * Code styling is explicit per element so inline chips and code blocks
+ * can never bleed into each other: inline code renders as a small chip,
+ * block code renders as a dark terminal panel.
  */
 export function Markdown({ text }: { text: string }) {
 	return (
-		<div className="prose prose-sm max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-brand-700 prose-code:rounded prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:text-sm prose-pre:bg-muted">
+		<div className="prose prose-sm max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-brand-700">
 			<ReactMarkdown
 				components={{
 					a: (props) => (
@@ -17,6 +21,21 @@ export function Markdown({ text }: { text: string }) {
 							rel="noopener noreferrer"
 						/>
 					),
+					pre: ({ children }) => (
+						<pre className="overflow-x-auto rounded-lg bg-slate-950 p-4 text-xs leading-relaxed text-slate-100 ring-1 ring-slate-800">
+							{children}
+						</pre>
+					),
+					code: ({ className, children }) =>
+						className ? (
+							// block code (has language-* class): inherits pre styling
+							<code className="font-mono">{children}</code>
+						) : (
+							// inline code chip
+							<code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[0.85em] text-brand-800">
+								{children}
+							</code>
+						),
 				}}
 			>
 				{text}
